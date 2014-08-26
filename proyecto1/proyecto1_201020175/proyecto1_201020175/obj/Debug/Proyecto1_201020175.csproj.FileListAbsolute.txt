@@ -1,0 +1,12 @@
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\bin\Debug\Proyecto1_201020175.exe.config
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\bin\Debug\Proyecto1_201020175.exe
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\bin\Debug\Proyecto1_201020175.pdb
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\bin\Debug\Irony.dll
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.csprojResolveAssemblyReference.cache
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1.Properties.Resources.resources
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1.Ventana.resources
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.csproj.GenerateResource.Cache
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.exe
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.pdb
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\bin\Debug\FastColoredTextBox.dll
+C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyecto1_201020175\Proyecto1_201020175\bin\Debug\FastColoredTextBox.xml

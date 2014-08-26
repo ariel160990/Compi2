@@ -1,0 +1,10 @@
+<def_pista> => 'pista' iden <extiende> <cuerpo_pista>
+				| 'pista' iden <cuerpo_pista>
+				
+<extiende> => 'extiende' <lista_extiende>
+
+<lista_extiende> => <lista_extiende> , id
+				| id
+				
+<cuerpo_pista> => inden <sentencia> dedent
+				
