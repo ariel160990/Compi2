@@ -41,7 +41,8 @@ namespace Proyecto1
 
             s0.Rule = def_pista
                     | exp + Eos
-                    | dec_var;
+                    | dec_var
+                    | def_pista + dec_var;
 
             def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent+ cuerpo_pista + Dedent
                     | ToTerm("pista") + id + Eos + Indent + cuerpo_pista + Dedent;
