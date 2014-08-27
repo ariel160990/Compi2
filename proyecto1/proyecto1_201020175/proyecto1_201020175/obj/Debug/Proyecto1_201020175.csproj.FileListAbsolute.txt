@@ -13,3 +13,11 @@ C:\Users\Ariel\Dropbox\Compiladores2\2do. Sem 2014\LABORATORIO\PROYECTO1\Proyect
 C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\bin\Debug\Proyecto1_201020175.exe.config
 C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.exe
 C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.pdb
+C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\bin\Debug\Proyecto1_201020175.exe
+C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\bin\Debug\Proyecto1_201020175.pdb
+C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\bin\Debug\Irony.dll
+C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\bin\Debug\FastColoredTextBox.xml
+C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.csprojResolveAssemblyReference.cache
+C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1.Properties.Resources.resources
+C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1.Ventana.resources
+C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.csproj.GenerateResource.Cache

@@ -36,13 +36,15 @@ namespace Proyecto1
                         exp = new NonTerminal("exp"),
                         dec_var = new NonTerminal("dec_var"),
                         tipo_var = new NonTerminal("tipo_var"),
-                        lista_ids = new NonTerminal("lista_ids");
+                        lista_ids = new NonTerminal("lista_ids"),
+                        asig_var = new NonTerminal("asig_var");
                         
 
             s0.Rule = def_pista
                     | exp + Eos
                     | dec_var
-                    | def_pista + dec_var;
+                    | s0 + asig_var
+                    | asig_var;
 
             def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent+ cuerpo_pista + Dedent
                     | ToTerm("pista") + id + Eos + Indent + cuerpo_pista + Dedent;
@@ -78,11 +80,19 @@ namespace Proyecto1
                     | exp + "&|" + exp
                     | ToTerm("!") + exp
                     | ToTerm("(") + exp + ")"
+                    | ToTerm("++") + id
+                    | ToTerm("--") + id
+                    | id + "++"
+                    | id + "--"
                     | id
-                    | entero;
+                    | entero
+                    | "verdadero"
+                    | "falso";
 
             dec_var.Rule = ToTerm("keep") + "var" + tipo_var + lista_ids + Eos
                     | ToTerm("var") + tipo_var + lista_ids+ Eos;
+
+            
 
             tipo_var.Rule = ToTerm("entero")
                     | ToTerm("doble")
@@ -94,6 +104,13 @@ namespace Proyecto1
                     | lista_ids + "," + id + "=" + exp
                     | id + "=" + exp
                     | id;
+
+            asig_var.Rule = id + "=" + exp + Eos
+                    | id + "+=" + exp + Eos
+                    | id + "++" + Eos
+                    | id + "--" + Eos;
+
+
 
 
             this.Root = s0;
