@@ -37,14 +37,17 @@ namespace Proyecto1
                         dec_var = new NonTerminal("dec_var"),
                         tipo_var = new NonTerminal("tipo_var"),
                         lista_ids = new NonTerminal("lista_ids"),
-                        asig_var = new NonTerminal("asig_var");
+                        asig_var = new NonTerminal("asig_var"),
+                        sen_si = new NonTerminal("sen_si"),
+                        instrucciones = new NonTerminal("instrucciones");
                         
 
             s0.Rule = def_pista
                     | exp + Eos
                     | dec_var
                     | s0 + asig_var
-                    | asig_var;
+                    | asig_var
+                    | sen_si;
 
             def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent+ cuerpo_pista + Dedent
                     | ToTerm("pista") + id + Eos + Indent + cuerpo_pista + Dedent;
@@ -110,7 +113,15 @@ namespace Proyecto1
                     | id + "++" + Eos
                     | id + "--" + Eos;
 
+            //sentencia si
+            sen_si.Rule = ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent;
 
+            instrucciones.Rule = instrucciones + asig_var
+                    | instrucciones + dec_var
+                    | instrucciones + sen_si
+                    | asig_var
+                    | dec_var
+                    | sen_si;
 
 
             this.Root = s0;
