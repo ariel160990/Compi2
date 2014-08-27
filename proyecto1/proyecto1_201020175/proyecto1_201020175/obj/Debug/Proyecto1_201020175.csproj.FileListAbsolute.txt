@@ -21,3 +21,14 @@ C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_2
 C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1.Properties.Resources.resources
 C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1.Ventana.resources
 C:\Users\Ariel\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.csproj.GenerateResource.Cache
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\bin\Debug\Proyecto1_201020175.exe.config
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.exe
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.pdb
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\bin\Debug\Proyecto1_201020175.exe
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\bin\Debug\Proyecto1_201020175.pdb
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\bin\Debug\Irony.dll
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\bin\Debug\FastColoredTextBox.xml
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.csprojResolveAssemblyReference.cache
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1.Properties.Resources.resources
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1.Ventana.resources
+C:\Users\ArielIsai\Documents\GitHub\Compi2\proyecto1\proyecto1_201020175\Proyecto1_201020175\obj\Debug\Proyecto1_201020175.csproj.GenerateResource.Cache

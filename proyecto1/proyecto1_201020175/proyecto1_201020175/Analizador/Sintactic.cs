@@ -49,8 +49,8 @@ namespace Proyecto1
                     | asig_var
                     | sen_si;
 
-            def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent+ cuerpo_pista + Dedent
-                    | ToTerm("pista") + id + Eos + Indent + cuerpo_pista + Dedent;
+            def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent + instrucciones + Dedent
+                    | ToTerm("pista") + id + Eos + Indent + instrucciones + Dedent;
 
             extiende.Rule = "extiende" + lista_extender;
 
@@ -114,7 +114,11 @@ namespace Proyecto1
                     | id + "--" + Eos;
 
             //sentencia si
-            sen_si.Rule = ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent;
+            sen_si.Rule = ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent
+                    | ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent + "sino" + Eos + Indent + instrucciones + Dedent;
+
+            //
+
 
             instrucciones.Rule = instrucciones + asig_var
                     | instrucciones + dec_var
