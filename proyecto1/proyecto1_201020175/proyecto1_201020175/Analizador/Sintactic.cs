@@ -39,6 +39,14 @@ namespace Proyecto1
                         lista_ids = new NonTerminal("lista_ids"),
                         asig_var = new NonTerminal("asig_var"),
                         sen_si = new NonTerminal("sen_si"),
+                        sen_switch = new NonTerminal("sen_switch"),
+                        sen_caso = new NonTerminal("sen_caso"),
+                        lista_caso = new NonTerminal("lista_caso"),
+                        sen_para = new NonTerminal("sen_para"),
+                        asig_para = new NonTerminal("asig_para"),
+                        dec_para = new NonTerminal("dec_para"),
+                        sen_mientras = new NonTerminal("sen_mientras"),
+                        sen_hacer = new NonTerminal("sen_hacer"),
                         instrucciones = new NonTerminal("instrucciones");
                         
 
@@ -95,8 +103,6 @@ namespace Proyecto1
             dec_var.Rule = ToTerm("keep") + "var" + tipo_var + lista_ids + Eos
                     | ToTerm("var") + tipo_var + lista_ids+ Eos;
 
-            
-
             tipo_var.Rule = ToTerm("entero")
                     | ToTerm("doble")
                     | ToTerm("boolean")
@@ -117,16 +123,48 @@ namespace Proyecto1
             sen_si.Rule = ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent
                     | ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent + "sino" + Eos + Indent + instrucciones + Dedent;
 
-            //
+            //sentencia switch
+            sen_switch.Rule = ToTerm("switch") + "(" + exp + ")" + Eos + Indent + lista_caso + Dedent;
 
+            lista_caso.Rule = lista_caso + sen_caso
+                    | sen_caso;
+
+            sen_caso.Rule = ToTerm("caso") + exp + Eos + Indent + instrucciones + Dedent
+                    | ToTerm("caso") + exp + Eos + Indent + instrucciones + "salir" + Eos + Dedent;
+
+            //sentencia para
+            sen_para.Rule = ToTerm("para") + "(" + dec_para + ";" + exp + ";" + asig_para + ")" + Eos + Indent + instrucciones + Dedent;
+
+            dec_para.Rule = ToTerm("var") + tipo_var + id + "=" + exp
+                    | asig_para;
+
+            asig_para.Rule = id + "=" + exp
+                    | id + "+=" + exp
+                    | id + "++"
+                    | id + "--";
+
+
+            //sentencia mientras
+            sen_mientras.Rule = ToTerm("mientras") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent;
+
+            //sentencia hacer
+            sen_hacer.Rule = ToTerm("hacer") + Eos + instrucciones + "mientras" + "(" + exp + ")";
 
             instrucciones.Rule = instrucciones + asig_var
                     | instrucciones + dec_var
                     | instrucciones + sen_si
+                    | instrucciones + sen_switch
+                    | instrucciones + sen_para
+                    | instrucciones + sen_mientras
+                    | instrucciones + sen_hacer
                     | asig_var
                     | dec_var
-                    | sen_si;
-
+                    | sen_si
+                    | sen_switch
+                    | sen_para
+                    | sen_mientras
+                    | sen_hacer;
+            
 
             this.Root = s0;
 
