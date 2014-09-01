@@ -33,6 +33,13 @@ namespace Proyecto1
             LanguageData lenguaje = new LanguageData(grammar);
             Parser p = new Parser(lenguaje);
             ParseTree arbol = p.Parse(codigo);
+
+            if (arbol.Root == null) { 
+                foreach(Irony.LogMessage a in arbol.ParserMessages){
+                    Console.WriteLine("sintax error: " +a.Message + "   location: "+a.Location + "   state: "+a.ParserState);
+                }
+            }
+
             return arbol.Root != null;
         }
 

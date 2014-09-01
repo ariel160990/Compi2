@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Irony.Parsing;
 using Irony.Ast;
-using Irony.Parsing;
+//using Irony.Parsing;
 
 namespace Proyecto1
 {
@@ -19,6 +19,21 @@ namespace Proyecto1
             CommentTerminal comblock = new CommentTerminal("comblock","<-","->");
 
             RegexBasedTerminal entero = new RegexBasedTerminal("entero","[0-9]+");
+            RegexBasedTerminal doble = new RegexBasedTerminal("doble", "([0-9]+.[0-9]+)|([0-9]+.)|(.[0-9]+)");
+
+            RegexBasedTerminal cadena = new RegexBasedTerminal("cadena", "\"[^\r\n-]+\"");
+            //RegexBasedTerminal caracter = new RegexBasedTerminal("caracter", "\'([^\r\n\t\f\b\\\'\"])|(#t)|(#n)|(#r)\'");
+
+            /*
+             * \n -----> Nueva Linea.
+\t -----> Tabulador.
+\r -----> Retroceso de Carro.
+\f -----> Comienzo de Pagina.
+\b -----> Borrado a la Izquierda.
+\\ -----> El carácter barra inversa ( \ ).
+\' -----> El carácter prima simple ( ' ).
+\" -----> El carácter prima doble o bi-prima ( " ).
+             */
 
             base.NonGrammarTerminals.Add(comm);
             base.NonGrammarTerminals.Add(comline);
@@ -50,14 +65,12 @@ namespace Proyecto1
                         lista_dec_param = new NonTerminal("lista_dec_param"),
                         sen_fun_reproducir = new NonTerminal("sen_fun_reproducir"),
                         nota = new NonTerminal("nota"),
+                        sen_fun_espera = new NonTerminal("sen_fun_espera"),
+                        sen_fun_principal = new NonTerminal("sen_fun_principal"),
+                        sen_fun_mensaje = new NonTerminal("sen_fun_mensaje"),
                         instrucciones = new NonTerminal("instrucciones");
 
-            s0.Rule = def_pista
-                    | exp + Eos
-                    | dec_var
-                    | s0 + asig_var
-                    | asig_var
-                    | sen_si;
+            s0.Rule = def_pista;
             def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent + instrucciones + Dedent
                     | ToTerm("pista") + id + Eos + Indent + instrucciones + Dedent;
             extiende.Rule = "extiende" + lista_extender;
@@ -74,7 +87,7 @@ namespace Proyecto1
                     | exp + "%" + exp
                     | exp + "^" + exp
                     | exp + "==" + exp
-                    | exp + "!" + exp
+                    | exp + "!=" + exp
                     | exp + ">" + exp
                     | exp + "<" + exp
                     | exp + ">=" + exp
@@ -89,14 +102,20 @@ namespace Proyecto1
                     | ToTerm("(") + exp + ")"
                     | ToTerm("++") + id
                     | ToTerm("--") + id
+                    | cadena
                     | id + "++"
                     | id + "--"
                     | id
                     | entero
-                    | "verdadero"
-                    | "falso";
+                    | doble
+                    | sen_fun_reproducir
+                    //| caracter
+                    | ToTerm("verdadero")
+                    | ToTerm("falso");
             dec_var.Rule = ToTerm("keep") + "var" + tipo_var + lista_ids + Eos
-                    | ToTerm("var") + tipo_var + lista_ids+ Eos;
+                    | ToTerm("keep") + "var" + tipo_var + "arreglo" + lista_ids + Eos
+                    | ToTerm("var") + tipo_var + lista_ids+ Eos
+                    |  ToTerm("var") + tipo_var + "arreglo" + lista_ids + Eos;
             tipo_var.Rule = ToTerm("entero")
                     | ToTerm("doble")
                     | ToTerm("boolean")
@@ -145,6 +164,13 @@ namespace Proyecto1
             //funcion reproducir
             sen_fun_reproducir.Rule = ToTerm("reproducir") + "(" + nota + "," + tipo_var + exp + "," + tipo_var + exp + "," + tipo_var + exp + ")" + Eos;
             nota.Rule = ToTerm("do") | ToTerm("re") | ToTerm("mi") | ToTerm("fa") | ToTerm("sol") | ToTerm("la") | ToTerm("si");
+            // funcion espera
+            sen_fun_espera.Rule = ToTerm("esperar") + "(" + exp + "," + exp + ")";   
+            // funcion principal
+            sen_fun_principal.Rule = ToTerm("principal") + "(" + ")" + Eos + Indent + instrucciones + Dedent;
+            // funcion mensaje
+            sen_fun_mensaje.Rule = ToTerm("mensaje") + "(" + exp + ")";
+            //{ { { 1, 2, 3 }, { 4, 5, 6 } },{ { 7, 8, 9 }, { 10, 11, 12 } } }
             instrucciones.Rule = instrucciones + asig_var
                     | instrucciones + dec_var
                     | instrucciones + sen_si
@@ -152,7 +178,10 @@ namespace Proyecto1
                     | instrucciones + sen_para
                     | instrucciones + sen_mientras
                     | instrucciones + sen_hacer
-                    | instrucciones +  sen_fun_reproducir
+                    | instrucciones + sen_fun_reproducir
+                    | instrucciones + sen_fun_espera
+                    | instrucciones + sen_fun_principal
+                    | instrucciones + sen_fun_proc
                     | asig_var
                     | dec_var
                     | sen_si
@@ -160,7 +189,11 @@ namespace Proyecto1
                     | sen_para
                     | sen_mientras
                     | sen_hacer
-                    | sen_fun_reproducir;
+                    | sen_fun_reproducir
+                    | sen_fun_espera
+                    | sen_fun_principal
+                    | sen_fun_proc;
+
 
             this.Root = s0;
 
@@ -175,7 +208,7 @@ namespace Proyecto1
             RegisterOperators(7, "*", "/","%");
             RegisterOperators(8,"^");
 
-            //MarkPunctuation("(", ")");
+            //MarkPunctuation("(", ")");    
 
         }
 
@@ -185,7 +218,6 @@ namespace Proyecto1
               OutlineOptions.ProduceIndents | OutlineOptions.CheckBraces, ToTerm(@"\")); // "\" is continuation symbol
             filters.Add(outlineFilter);
         }
-
 
     }
 }
