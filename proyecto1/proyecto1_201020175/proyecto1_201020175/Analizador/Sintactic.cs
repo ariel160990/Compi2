@@ -12,16 +12,17 @@ namespace Proyecto1
     class Sintactic: Grammar
     {
         public Sintactic(){
-            var number = TerminalFactory.CreateCSharpNumber("number");
+            var numero = TerminalFactory.CreateCSharpNumber("numero");
 
             CommentTerminal comm = new CommentTerminal("comm", "\n", "\r");
             CommentTerminal comline = new CommentTerminal("comline",">>","\n");
             CommentTerminal comblock = new CommentTerminal("comblock","<-","->");
 
-            RegexBasedTerminal entero = new RegexBasedTerminal("entero","[0-9]+");
-            RegexBasedTerminal doble = new RegexBasedTerminal("doble", "([0-9]+.[0-9]+)|([0-9]+.)|(.[0-9]+)");
+            //RegexBasedTerminal entero = new RegexBasedTerminal("entero","[0-9]+");
+            //RegexBasedTerminal doble = new RegexBasedTerminal("doble", "([0-9]+.[0-9]+)|([0-9]+.)|(.[0-9]+)");
 
-            RegexBasedTerminal cadena = new RegexBasedTerminal("cadena", "\"[^\r\n-]+\"");
+            RegexBasedTerminal cadena = new RegexBasedTerminal("cadena", "\"[^\r\n\"]+\"");
+            //RegexBasedTerminal id = new RegexBasedTerminal("id","([A-Z]|[a-z])([A-Z]|[a-z]|[0-9]|_)*");
             //RegexBasedTerminal caracter = new RegexBasedTerminal("caracter", "\'([^\r\n\t\f\b\\\'\"])|(#t)|(#n)|(#r)\'");
 
             /*
@@ -68,12 +69,14 @@ namespace Proyecto1
                         sen_fun_espera = new NonTerminal("sen_fun_espera"),
                         sen_fun_principal = new NonTerminal("sen_fun_principal"),
                         sen_fun_mensaje = new NonTerminal("sen_fun_mensaje"),
+                        llamada_a_funcion = new NonTerminal("llamada_a_funcion"),
+                        lista_param = new NonTerminal("lista_param"),
                         instrucciones = new NonTerminal("instrucciones");
 
             s0.Rule = def_pista;
             def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent + instrucciones + Dedent
                     | ToTerm("pista") + id + Eos + Indent + instrucciones + Dedent;
-            extiende.Rule = "extiende" + lista_extender;
+            extiende.Rule = ToTerm("extiende") + lista_extender;
             lista_extender.Rule = lista_extender + "," + id
                     | id ;
             cuerpo_pista.Rule = cuerpo_pista+"instrucciones" + Eos
@@ -106,9 +109,9 @@ namespace Proyecto1
                     | id + "++"
                     | id + "--"
                     | id
-                    | entero
-                    | doble
-                    | sen_fun_reproducir
+                    | numero
+                    //| doble
+                    | llamada_a_funcion
                     //| caracter
                     | ToTerm("verdadero")
                     | ToTerm("falso");
@@ -158,18 +161,27 @@ namespace Proyecto1
                     | tipo_var + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones + Dedent
                     | tipo_var + id + "(" + ")" + Eos + Indent + instrucciones + Dedent
                     | id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones + Dedent
-                    | id + "(" + ")" + Eos + Indent + instrucciones + Dedent;
+                    | id + "(" + ")" + Eos + Indent + instrucciones + Dedent
+                    | id + "(" + ")" + Eos
+                    | id + "(" + lista_param + ")" + Eos;
             lista_dec_param.Rule = lista_dec_param + "," +tipo_var + id
                     | tipo_var + id;
+            //llamada a funcion
+            llamada_a_funcion.Rule = id + "(" + ")"
+                    | id + "(" + lista_param +")";
+            lista_param.Rule = lista_param + "," + exp
+                    | exp;
+            /*
             //funcion reproducir
-            sen_fun_reproducir.Rule = ToTerm("reproducir") + "(" + nota + "," + tipo_var + exp + "," + tipo_var + exp + "," + tipo_var + exp + ")" + Eos;
+            sen_fun_reproducir.Rule = ToTerm("reproducir") + "(" + nota + "," + exp + "," + exp + "," + exp + ")";
             nota.Rule = ToTerm("do") | ToTerm("re") | ToTerm("mi") | ToTerm("fa") | ToTerm("sol") | ToTerm("la") | ToTerm("si");
             // funcion espera
-            sen_fun_espera.Rule = ToTerm("esperar") + "(" + exp + "," + exp + ")";   
+            sen_fun_espera.Rule = ToTerm("esperar") + "(" + exp + "," + exp + ")" + Eos;   
             // funcion principal
             sen_fun_principal.Rule = ToTerm("principal") + "(" + ")" + Eos + Indent + instrucciones + Dedent;
             // funcion mensaje
             sen_fun_mensaje.Rule = ToTerm("mensaje") + "(" + exp + ")";
+            */
             //{ { { 1, 2, 3 }, { 4, 5, 6 } },{ { 7, 8, 9 }, { 10, 11, 12 } } }
             instrucciones.Rule = instrucciones + asig_var
                     | instrucciones + dec_var
@@ -178,10 +190,12 @@ namespace Proyecto1
                     | instrucciones + sen_para
                     | instrucciones + sen_mientras
                     | instrucciones + sen_hacer
-                    | instrucciones + sen_fun_reproducir
-                    | instrucciones + sen_fun_espera
-                    | instrucciones + sen_fun_principal
+                    //| instrucciones + sen_fun_reproducir + Eos
+                    //| instrucciones + sen_fun_espera
+                    //| instrucciones + sen_fun_principal
                     | instrucciones + sen_fun_proc
+                    //| instrucciones + llamada_a_funcion + Eos
+                    | instrucciones + "retorna" + exp + Eos
                     | asig_var
                     | dec_var
                     | sen_si
@@ -189,10 +203,12 @@ namespace Proyecto1
                     | sen_para
                     | sen_mientras
                     | sen_hacer
-                    | sen_fun_reproducir
-                    | sen_fun_espera
-                    | sen_fun_principal
-                    | sen_fun_proc;
+                    //| sen_fun_reproducir + Eos
+                    //| sen_fun_espera
+                    //| sen_fun_principal
+                    | sen_fun_proc
+                    //| llamada_a_funcion + Eos
+                    | "retorna" + exp + Eos;
 
 
             this.Root = s0;

@@ -26,7 +26,12 @@ namespace Proyecto1
                         }
                         break;
                     }
-                case "e":
+                case "def_pista":
+                    {
+                        //node.ChildNodes[2]
+                        break;
+                    }
+                /*case "e":
                     {
                         if (node.ChildNodes.Count == 1)
                         {
@@ -80,7 +85,7 @@ namespace Proyecto1
                     {
                         result = node.Token.Value;
                         break;
-                    }
+                    }*/
             }
             return result;
         }

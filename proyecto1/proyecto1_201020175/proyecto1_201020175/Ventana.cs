@@ -100,7 +100,11 @@ namespace Proyecto1
             }
             else
             {
-                cadenagrafo = cadenagrafo + "node" + n.ToString() + "[label=\"" + nodo.Token.Text + "\"];\n";
+                string cad1 = nodo.Token.Text.Replace(">", "\\>");
+                cad1 = cad1.Replace("<", "\\<");
+                cad1 = cad1.Replace("\"","\\\"");
+                //cadenagrafo = cadenagrafo + "node" + n.ToString() + "[label=\"" + nodo.Token.Text + "\"];\n";
+                cadenagrafo = cadenagrafo + "node" + n.ToString() + "[label=\"" + cad1 + "\"];\n";
             }
 
             foreach (ParseTreeNode child in nodo.ChildNodes)
