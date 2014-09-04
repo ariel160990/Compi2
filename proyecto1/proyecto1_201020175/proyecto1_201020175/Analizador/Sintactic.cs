@@ -25,6 +25,9 @@ namespace Proyecto1
             //RegexBasedTerminal id = new RegexBasedTerminal("id","([A-Z]|[a-z])([A-Z]|[a-z]|[0-9]|_)*");
             //RegexBasedTerminal caracter = new RegexBasedTerminal("caracter", "\'([^\r\n\t\f\b\\\'\"])|(#t)|(#n)|(#r)\'");
 
+            //var chr = new RegexBasedTerminal("char", "'([^#']|#'|#n|#t|##)'");
+            //var str = new RegexBasedTerminal("str", "\"([^#\"]|#\"|#n|#t|##)*\"");
+
             /*
              * \n -----> Nueva Linea.
 \t -----> Tabulador.
@@ -71,6 +74,7 @@ namespace Proyecto1
                         sen_fun_mensaje = new NonTerminal("sen_fun_mensaje"),
                         llamada_a_funcion = new NonTerminal("llamada_a_funcion"),
                         lista_param = new NonTerminal("lista_param"),
+                        arreglo = new NonTerminal("arreglo"),
                         instrucciones = new NonTerminal("instrucciones");
 
             s0.Rule = def_pista;
@@ -115,6 +119,8 @@ namespace Proyecto1
                     //| caracter
                     | ToTerm("verdadero")
                     | ToTerm("falso");
+            arreglo.Rule = arreglo + "," + "{" + exp + "}"
+                    | ToTerm("{") + exp + "}";
             dec_var.Rule = ToTerm("keep") + "var" + tipo_var + lista_ids + Eos
                     | ToTerm("keep") + "var" + tipo_var + "arreglo" + lista_ids + Eos
                     | ToTerm("var") + tipo_var + lista_ids+ Eos
