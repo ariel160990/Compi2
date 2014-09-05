@@ -20,13 +20,16 @@ namespace Proyecto1
 
             //RegexBasedTerminal entero = new RegexBasedTerminal("entero","[0-9]+");
             //RegexBasedTerminal doble = new RegexBasedTerminal("doble", "([0-9]+.[0-9]+)|([0-9]+.)|(.[0-9]+)");
+            
 
-            RegexBasedTerminal cadena = new RegexBasedTerminal("cadena", "\"[^\r\n\"]+\"");
             //RegexBasedTerminal id = new RegexBasedTerminal("id","([A-Z]|[a-z])([A-Z]|[a-z]|[0-9]|_)*");
             //RegexBasedTerminal caracter = new RegexBasedTerminal("caracter", "\'([^\r\n\t\f\b\\\'\"])|(#t)|(#n)|(#r)\'");
 
             //var chr = new RegexBasedTerminal("char", "'([^#']|#'|#n|#t|##)'");
+            RegexBasedTerminal caracter = new RegexBasedTerminal("caracter", "'([^#']|#'|#n|#t|##)'");
             //var str = new RegexBasedTerminal("str", "\"([^#\"]|#\"|#n|#t|##)*\"");
+            //RegexBasedTerminal cadena = new RegexBasedTerminal("cadena", "\"[^\r\n\"]+\"");
+            RegexBasedTerminal cadena = new RegexBasedTerminal("cadena", "\"([^#\"]|#\"|#n|#t|##)*\"");
 
             /*
              * \n -----> Nueva Linea.
@@ -48,7 +51,6 @@ namespace Proyecto1
             //no terminales
             NonTerminal s0 = new NonTerminal("s0"),
                         def_pista = new NonTerminal("def_pista"),
-                        cuerpo_pista = new NonTerminal("cuerpo_pista"),
                         extiende = new NonTerminal("extiende"),
                         lista_extender = new NonTerminal("lista_extender"),
                         exp = new NonTerminal("exp"),
@@ -76,30 +78,26 @@ namespace Proyecto1
                         lista_param = new NonTerminal("lista_param"),
                         arreglo = new NonTerminal("arreglo"),
                         instrucciones = new NonTerminal("instrucciones");
-
             s0.Rule = def_pista;
             def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent + instrucciones + Dedent
                     | ToTerm("pista") + id + Eos + Indent + instrucciones + Dedent;
             extiende.Rule = ToTerm("extiende") + lista_extender;
             lista_extender.Rule = lista_extender + "," + id
                     | id ;
-            cuerpo_pista.Rule = cuerpo_pista+"instrucciones" + Eos
-                   | cuerpo_pista + "inicia_ciclo" + Eos + Indent + cuerpo_pista + Dedent
-                   | ToTerm("inicia_ciclo") + Eos + Indent + cuerpo_pista + Dedent
-                   | ToTerm("instrucciones")+Eos;
-            exp.Rule = exp + "+"+ exp
-                    | exp +"-"+ exp
-                    | exp+ "*"+ exp
-                    | exp +"/"+ exp
+            exp.Rule = exp + "+" + exp
+                    | exp +"-" + exp
+                    | exp+ "*" + exp
+                    | exp +"/" + exp
                     | exp + "%" + exp
                     | exp + "^" + exp
+                    //operadores relacionales
                     | exp + "==" + exp
                     | exp + "!=" + exp
                     | exp + ">" + exp
                     | exp + "<" + exp
                     | exp + ">=" + exp
                     | exp + "<=" + exp
-                    | exp + "!¡" + exp
+                    | "!¡" + exp
                     | exp + "&&" + exp
                     | exp + "!&&" + exp
                     | exp + "||" + exp
@@ -116,7 +114,7 @@ namespace Proyecto1
                     | numero
                     //| doble
                     | llamada_a_funcion
-                    //| caracter
+                    | caracter
                     | ToTerm("verdadero")
                     | ToTerm("falso");
             arreglo.Rule = arreglo + "," + "{" + exp + "}"
@@ -223,7 +221,7 @@ namespace Proyecto1
             RegisterOperators(2, "&&", "!&&");
             //RegisterOperators(3, "!");
 
-            RegisterOperators(4, "==","!",">","<",">=","<=");
+            RegisterOperators(4, "==","!=",">","<",">=","<=");
             RegisterOperators(5, "!¡");
 
             RegisterOperators(6, "+", "-");
