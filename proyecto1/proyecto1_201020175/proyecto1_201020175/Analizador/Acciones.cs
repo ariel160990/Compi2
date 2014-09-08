@@ -52,6 +52,33 @@ namespace Proyecto1
                         if (node.ChildNodes.Count == 1) {
                             result = action(node.ChildNodes[0]);
                         }
+                        else if (node.ChildNodes.Count == 2) {
+                            if (node.ChildNodes[0].Token.Value.ToString().Equals("!¡")) {
+                                Variable var_temp = lst_variables.buscar(node.ChildNodes[1].Token.Value.ToString());
+                                if (var_temp != null)
+                                {
+                                    result = false;
+                                }
+                                else {
+                                    result = true;
+                                }
+                            }
+                            else if (node.ChildNodes[0].Token.Value.ToString().Equals("!")) {
+                                object obj_temp = action(node.ChildNodes[1]);
+                                try {
+                                    bool temp_bool = (Boolean)obj_temp;
+                                    if (temp_bool)
+                                    {
+                                        result = false;
+                                    }
+                                    else {
+                                        result = true;
+                                    }
+                                }catch(InvalidCastException e){
+                                    
+                                }
+                            }
+                        }
                         break;
                     }
                 case "numero"://listo

@@ -99,7 +99,7 @@ namespace Proyecto1
                     | exp + "<" + exp
                     | exp + ">=" + exp
                     | exp + "<=" + exp
-                    | "!¡" + exp
+                    | "!¡" + id
                 //operadores logicos
                     | exp + "&&" + exp
                     | exp + "!&&" + exp
@@ -110,9 +110,9 @@ namespace Proyecto1
                     | ToTerm("(") + exp + ")"
                     | ToTerm("++") + id
                     | ToTerm("--") + id
-                    | cadena
                     | id + "++"
                     | id + "--"
+                    | cadena
                     | id
                     | numero
                 //| doble
