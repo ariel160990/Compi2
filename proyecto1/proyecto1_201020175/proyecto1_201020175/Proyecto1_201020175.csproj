@@ -54,6 +54,8 @@
     <Compile Include="Analizador\Analizador.cs" />
     <Compile Include="Analizador\Sintactic.cs" />
     <Compile Include="Analizador\Sintactico.cs" />
+    <Compile Include="Objetos\Variable.cs" />
+    <Compile Include="Objetos\Variables.cs" />
     <Compile Include="Ventana.cs">
       <SubType>Form</SubType>
     </Compile>

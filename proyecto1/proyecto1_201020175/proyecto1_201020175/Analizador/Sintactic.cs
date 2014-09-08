@@ -31,6 +31,8 @@ namespace Proyecto1
             //RegexBasedTerminal cadena = new RegexBasedTerminal("cadena", "\"[^\r\n\"]+\"");
             RegexBasedTerminal cadena = new RegexBasedTerminal("cadena", "\"([^#\"]|#\"|#n|#t|##)*\"");
 
+            RegexBasedTerminal valor_bool = new RegexBasedTerminal("valor_bool","verdadero|falso");
+
             /*
              * \n -----> Nueva Linea.
 \t -----> Tabulador.
@@ -85,12 +87,12 @@ namespace Proyecto1
             lista_extender.Rule = lista_extender + "," + id
                     | id ;
             exp.Rule = exp + "+" + exp
-                    | exp +"-" + exp
-                    | exp+ "*" + exp
-                    | exp +"/" + exp
+                    | exp + "-" + exp
+                    | exp + "*" + exp
+                    | exp + "/" + exp
                     | exp + "%" + exp
                     | exp + "^" + exp
-                    //operadores relacionales
+                //operadores relacionales
                     | exp + "==" + exp
                     | exp + "!=" + exp
                     | exp + ">" + exp
@@ -98,6 +100,7 @@ namespace Proyecto1
                     | exp + ">=" + exp
                     | exp + "<=" + exp
                     | "!¡" + exp
+                //operadores logicos
                     | exp + "&&" + exp
                     | exp + "!&&" + exp
                     | exp + "||" + exp
@@ -112,11 +115,12 @@ namespace Proyecto1
                     | id + "--"
                     | id
                     | numero
-                    //| doble
+                //| doble
                     | llamada_a_funcion
                     | caracter
-                    | ToTerm("verdadero")
-                    | ToTerm("falso");
+                //| ToTerm("verdadero")
+                //| ToTerm("falso");
+                    | valor_bool;
             arreglo.Rule = arreglo + "," + "{" + exp + "}"
                     | ToTerm("{") + exp + "}";
             dec_var.Rule = ToTerm("keep") + "var" + tipo_var + lista_ids + Eos
@@ -144,7 +148,7 @@ namespace Proyecto1
             lista_caso.Rule = lista_caso + sen_caso
                     | sen_caso;
             sen_caso.Rule = ToTerm("caso") + exp + Eos + Indent + instrucciones + Dedent
-                    | ToTerm("caso") + exp + Eos + Indent + instrucciones + "salir" + Eos + Dedent;
+                    | ToTerm("default") + exp + Eos + Indent + instrucciones + Dedent;
             //sentencia para
             sen_para.Rule = ToTerm("para") + "(" + dec_para + ";" + exp + ";" + asig_para + ")" + Eos + Indent + instrucciones + Dedent;
             dec_para.Rule = ToTerm("var") + tipo_var + id + "=" + exp
@@ -156,7 +160,7 @@ namespace Proyecto1
             //sentencia mientras
             sen_mientras.Rule = ToTerm("mientras") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent;
             //sentencia hacer
-            sen_hacer.Rule = ToTerm("hacer") + Eos + instrucciones + "mientras" + "(" + exp + ")";
+            sen_hacer.Rule = ToTerm("hacer") + Eos + instrucciones + "mientras" + "(" + exp + ")" + Eos;
             //funciones y procedimientos
             sen_fun_proc.Rule = ToTerm("keep") + tipo_var + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones + Dedent
                     | ToTerm("keep") + tipo_var + id + "(" + ")" + Eos + Indent + instrucciones + Dedent
@@ -200,6 +204,8 @@ namespace Proyecto1
                     | instrucciones + sen_fun_proc
                     //| instrucciones + llamada_a_funcion + Eos
                     | instrucciones + "retorna" + exp + Eos
+                    | instrucciones + "salir" + Eos
+                    | instrucciones + "continuar" + Eos
                     | asig_var
                     | dec_var
                     | sen_si
@@ -212,14 +218,16 @@ namespace Proyecto1
                     //| sen_fun_principal
                     | sen_fun_proc
                     //| llamada_a_funcion + Eos
-                    | "retorna" + exp + Eos;
+                    | "retorna" + exp + Eos
+                    | "salir" + Eos
+                    | "continuar" + Eos;
 
 
             this.Root = s0;
 
             RegisterOperators(1, "||", "!||", "&|");
             RegisterOperators(2, "&&", "!&&");
-            //RegisterOperators(3, "!");
+            RegisterOperators(3, "!");
 
             RegisterOperators(4, "==","!=",">","<",">=","<=");
             RegisterOperators(5, "!¡");

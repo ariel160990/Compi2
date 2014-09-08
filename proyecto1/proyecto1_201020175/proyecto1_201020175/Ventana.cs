@@ -24,7 +24,7 @@ namespace Proyecto1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            /*if (txtEntrada.Text != null) {
+            if (txtEntrada.Text != null) {
                 Analizador a = new Analizador();
                 Object str = a.parse(txtEntrada.Text);
                 if (str != null)
@@ -34,9 +34,9 @@ namespace Proyecto1
                 else {
                     MessageBox.Show("Error");
                 }
-            }*/
+            }
             graficarArbol();
-            //probarCadena();
+            probarCadena();
         }
 
         private void probarCadena() {
