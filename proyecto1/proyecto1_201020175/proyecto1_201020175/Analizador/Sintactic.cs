@@ -198,11 +198,7 @@ namespace Proyecto1
                     | instrucciones + sen_para
                     | instrucciones + sen_mientras
                     | instrucciones + sen_hacer
-                    //| instrucciones + sen_fun_reproducir + Eos
-                    //| instrucciones + sen_fun_espera
-                    //| instrucciones + sen_fun_principal
                     | instrucciones + sen_fun_proc
-                    //| instrucciones + llamada_a_funcion + Eos
                     | instrucciones + "retorna" + exp + Eos
                     | instrucciones + "salir" + Eos
                     | instrucciones + "continuar" + Eos
@@ -213,11 +209,7 @@ namespace Proyecto1
                     | sen_para
                     | sen_mientras
                     | sen_hacer
-                    //| sen_fun_reproducir + Eos
-                    //| sen_fun_espera
-                    //| sen_fun_principal
                     | sen_fun_proc
-                    //| llamada_a_funcion + Eos
                     | "retorna" + exp + Eos
                     | "salir" + Eos
                     | "continuar" + Eos;

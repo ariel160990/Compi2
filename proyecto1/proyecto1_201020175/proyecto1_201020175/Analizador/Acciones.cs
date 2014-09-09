@@ -227,7 +227,13 @@ namespace Proyecto1
                     }
                 case "valor_bool"://listo
                     {
-                        result = node.Token.Value;
+                        if (node.Token.Value.ToString().Equals("verdadero"))
+                        {
+                            result = true;
+                        }
+                        else {
+                            result = false;
+                        }
                         break;
                     }
                 case "caracter"://listo
