@@ -53,17 +53,23 @@ namespace Proyecto1
                             result = action(node.ChildNodes[0]);
                         }
                         else if (node.ChildNodes.Count == 2) {
-                            if (node.ChildNodes[0].Token.Value.ToString().Equals("!¡")) {
+                            if (node.ChildNodes[0].Token.Value.ToString().Equals("!¡")) {// espresion is null
                                 Variable var_temp = lst_variables.buscar(node.ChildNodes[1].Token.Value.ToString());
                                 if (var_temp != null)
                                 {
-                                    result = false;
+                                    if (var_temp.valor == null)
+                                    {
+                                        result = true;
+                                    }
+                                    else {
+                                        result = false;
+                                    }
                                 }
                                 else {
-                                    result = true;
+                                    Console.WriteLine("Error semantico: la variable no ha sido declarada. " + node.ChildNodes[1].Token.Value.ToString());
                                 }
                             }
-                            else if (node.ChildNodes[0].Token.Value.ToString().Equals("!")) {
+                            else if (node.ChildNodes[0].Token.Value.ToString().Equals("!")) {//expresion not
                                 object obj_temp = action(node.ChildNodes[1]);
                                 try {
                                     bool temp_bool = (Boolean)obj_temp;
@@ -75,8 +81,141 @@ namespace Proyecto1
                                         result = true;
                                     }
                                 }catch(InvalidCastException e){
-                                    
+                                    Console.WriteLine("Error semantico: la expresion no se puede castear a booleano. ref1");
                                 }
+                            }else if(node.ChildNodes[0].Token.Value.ToString().Equals("++")){//expresion asignacion ++id
+                                Variable var_temp = lst_variables.buscar(node.ChildNodes[1].Token.Value.ToString());
+                                if (var_temp != null)
+                                {
+                                    if (var_temp.tipo.Equals("entero"))
+                                    {
+                                        if (var_temp.valor != null)
+                                        {
+                                            var_temp.valor = (int)var_temp.valor + 1;
+                                        }
+                                        else {
+                                            var_temp.valor = 1;
+                                        }
+                                        result = (int)var_temp.valor;
+                                    }
+                                    else if (var_temp.tipo.Equals("doble"))
+                                    {
+                                        if (var_temp.valor != null)
+                                        {
+                                            var_temp.valor = (double)var_temp.valor + 1;
+                                        }
+                                        else {
+                                            var_temp.valor = 1;
+                                        }
+                                        result = (double)var_temp.valor;
+                                    }
+                                    else {
+                                        Console.WriteLine("Error semantico: no se puede incrementar la variable por que no es numerico. ref3");
+                                    }
+                                }
+                                else {
+                                    Console.WriteLine("Error semantico: la variable no ha sido declarada. ref2");
+                                }
+                            }
+                            else if (node.ChildNodes[0].Token.Value.ToString().Equals("--")) { //expresion asigacion --id
+                                Variable var_temp = lst_variables.buscar(node.ChildNodes[1].Token.Value.ToString());
+                                if (var_temp != null)
+                                {
+                                    if (var_temp.tipo.Equals("entero")) {
+                                        if (var_temp.valor != null)
+                                        {
+                                            var_temp.valor = (int)var_temp.valor - 1;
+                                        }
+                                        else {
+                                            var_temp.valor = -1;
+                                        }
+                                        result = (int)var_temp.valor;
+                                    }
+                                    else if (var_temp.tipo.Equals("doble"))
+                                    {
+                                        if (var_temp.valor != null)
+                                        {
+                                            var_temp.valor = (double)var_temp.valor - 1;
+                                        }
+                                        else {
+                                            var_temp.valor = -1;
+                                        }
+                                        result = (double)var_temp.valor;
+                                    }
+                                    else {
+                                        Console.WriteLine("Error semantico: no se puede decrementar la variable por que no es numerico. ref5");
+                                    }
+                                }
+                                else {
+                                    Console.WriteLine("Error semantico: la variable no ha sido declarada. ref4");
+                                }
+                            }else if(node.ChildNodes[1].Token.Value.ToString().Equals("++")){//expresion asignacion id++
+                                Variable var_temp = lst_variables.buscar(node.ChildNodes[0].Token.Value.ToString());
+                                if (var_temp != null) {
+                                    if (var_temp.tipo.Equals("entero")) {
+                                        if (var_temp.valor != null)
+                                        {
+                                            result = (int)var_temp.valor;
+                                            var_temp.valor = (int)var_temp.valor + 1;
+                                        }
+                                        else {
+                                            result = 0;
+                                            var_temp.valor = 1;
+                                        }
+                                    }
+                                    else if (var_temp.tipo.Equals("doble"))
+                                    {
+                                        if (var_temp.valor != null)
+                                        {
+                                            result = (double)var_temp.valor;
+                                            var_temp.valor = (double)var_temp.valor + 1;
+                                        }
+                                        else {
+                                            result = 0;
+                                            var_temp.valor = 1;
+                                        }
+                                    }
+                                    else {
+                                        Console.WriteLine("Error semantico: no se puede incrementar la variable por que no es numerico. ref7");
+                                    }
+                                } else {
+                                    Console.WriteLine("Error semantico: la variable no ha sido declarada. ref6");
+                                }
+                            }
+                            else if (node.ChildNodes[1].Token.Value.ToString().Equals("--")) { //epresion asignacion id--
+                                Variable var_temp = lst_variables.buscar(node.ChildNodes[0].Token.Value.ToString());
+                                if (var_temp != null)
+                                {
+                                    if(var_temp.tipo.Equals("entero")){
+                                        if (var_temp.valor != null) {
+                                            result = (int)var_temp.valor;
+                                            var_temp.valor = (int)var_temp.valor - 1;
+                                        } else {
+                                            result = 0;
+                                            var_temp.valor = -1;
+                                        }
+                                    }else if(var_temp.tipo.Equals("doble")){
+                                        if (var_temp.valor != null) {
+                                            result = (double)var_temp.valor;
+                                            var_temp.valor = (double)var_temp.valor - 1;
+                                        } else {
+                                            result = 0;
+                                            var_temp.valor = -1;
+                                        }
+                                    }else{
+                                        Console.WriteLine("Error semantico: no se puede decrementar la variable por que no es numerico. ref9");
+                                    }
+                                }
+                                else {
+                                    Console.WriteLine("Error semantico: la variable no ha sido declarada. ref8");
+                                }
+                            }
+                        }
+                        else if (node.ChildNodes.Count == 3) {
+                            if (node.ChildNodes[1].Token.Value.ToString().Equals("+")) { //expresion suma: +
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[0]);
+                                //if(izq is string)
                             }
                         }
                         break;
@@ -108,6 +247,12 @@ namespace Proyecto1
                 case "id"://listo
                     {
                         result = node.Token.Value;
+                        Variable temp_var = lst_variables.buscar(node.Token.Value.ToString());
+                        if(temp_var!=null){
+                            result=temp_var.valor;
+                        }else{
+                            Console.WriteLine("Error semantico: la variable no ha sido declarada. ref9");
+                        }
                         break;
                     }
                 case "dec_var"://faltan declarar arreglos
