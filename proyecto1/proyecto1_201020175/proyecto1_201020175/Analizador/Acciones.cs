@@ -214,8 +214,271 @@ namespace Proyecto1
                         else if (node.ChildNodes.Count == 3) {
                             if (node.ChildNodes[1].Token.Value.ToString().Equals("+")) { //expresion suma: +
                                 object izq = action(node.ChildNodes[0]);
-                                object der = action(node.ChildNodes[0]);
-                                //if(izq is string)
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is string) {
+                                    if (der is int || der is double) {
+                                        result = (string)izq + Convert.ToString(der);
+                                    }
+                                    else if (der is string)
+                                    {
+                                        result = (string)izq + (string)der;
+                                    }
+                                    else {
+                                        Console.WriteLine("Error semantico: no se puede sumar valores de este tipo. ref10");
+                                    }
+                                }else if(izq is int){
+                                    if (der is int) {
+                                        result = (int)izq + (int)der;
+                                    }else if(der is double){
+                                        result = (int)izq + (double)der;
+                                    } else if (der is string) {
+                                        result = Convert.ToString(izq) + (string)der;
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se puede sumar los valores de este tipo. ref11");
+                                    }
+                                }else if(izq is double){
+                                    if (der is int){
+                                        result = (double)izq + (int)der;
+                                    }else if (der is double){
+                                        result = (double)izq + (double)der;
+                                    }else if (der is string){
+                                        result = Convert.ToString(izq) + (string)der;
+                                    }else{
+                                        Console.WriteLine("Error semantico: no se puede sumar los valores de este tipo. ref11");
+                                    }
+                                }else{
+                                    Console.WriteLine("Error semantico: no se puede sumar valores de este tipo. ref10");
+                                }
+                            }else if(node.ChildNodes[1].Token.Value.ToString().Equals("-")){//expresion resta: -
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int) {
+                                    if (der is int) {
+                                        result = (int)izq - (int)der;
+                                    } else if (der is double) {
+                                        result = (int)izq - (double)der;
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se pueden restar los valores. ambos deben ser numericos. ref16");
+                                    }
+                                }else if(izq is double){
+                                    if (der is int) {
+                                        result = (double)izq - (int)der;
+                                    } else if (der is double) {
+                                        result = (double)izq - (double)der;
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se pueden restar los valores. ambos deben ser numericos. ref 17");
+                                    }
+                                }else{
+                                    Console.WriteLine("Error semantico: no se pueden restar los valores. ambos deben ser numericos. ref15");
+                                }
+                            }else if(node.ChildNodes[1].Token.Value.ToString().Equals("*")){//expresion multiplicacion: *
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int)
+                                {
+                                    if (der is int)
+                                    {
+                                        result = (int)izq * (int)der;
+                                    }
+                                    else if (der is double)
+                                    {
+                                        result = (int)izq * (double)der;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se pueden multiplicar los valores. ambos deben ser numericos. ref16");
+                                    }
+                                }
+                                else if (izq is double)
+                                {
+                                    if (der is int)
+                                    {
+                                        result = (double)izq * (int)der;
+                                    }
+                                    else if (der is double)
+                                    {
+                                        result = (double)izq * (double)der;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se pueden multiplicar los valores. ambos deben ser numericos. ref 17");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error semantico: no se pueden multiplicar los valores. ambos deben ser numericos. ref15");
+                                }
+                            }
+                            else if (node.ChildNodes[1].Token.Value.ToString().Equals("/")) { //expresion division: /
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int)
+                                {
+                                    if (der is int)
+                                    {
+                                        if ((int)der != 0)
+                                        {
+                                            result = (int)izq / (int)der;
+                                        }
+                                        else {
+                                            Console.WriteLine("Error semantico: el denominador no puede cer igual a cero. ref18");
+                                        }
+                                    }
+                                    else if (der is double)
+                                    {
+                                        if ((double)der != 0)
+                                        {
+                                            result = (int)izq / (double)der;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error semantico: el denominador no puede cer igual a cero. ref18");
+                                        }
+                                        
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se pueden dividir los valores. ambos deben ser numericos. ref16");
+                                    }
+                                }
+                                else if (izq is double)
+                                {
+                                    if (der is int)
+                                    {
+                                        if ((int)der != 0)
+                                        {
+                                            result = (double)izq / (int)der;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error semantico: el denominador no puede cer igual a cero. ref18");
+                                        }
+                                    }
+                                    else if (der is double)
+                                    {
+                                        if ((double)der != 0)
+                                        {
+                                            result = (double)izq / (double)der;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error semantico: el denominador no puede cer igual a cero. ref18");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se pueden dividir los valores. ambos deben ser numericos. ref 17");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error semantico: no se pueden dividir los valores. ambos deben ser numericos. ref15");
+                                }
+                            }
+                            else if (node.ChildNodes[1].Token.Value.ToString().Equals("%")) { //expresion modulo: %
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int)
+                                {
+                                    if (der is int)
+                                    {
+                                        if ((int)der != 0)
+                                        {
+                                            result = (int)izq % (int)der;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error semantico: el denominador no puede cer igual a cero. ref18");
+                                        }
+                                    }
+                                    else if (der is double)
+                                    {
+                                        if ((double)der != 0)
+                                        {
+                                            result = (int)izq % (double)der;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error semantico: el denominador no puede cer igual a cero. ref18");
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se pueden dividir los valores. ambos deben ser numericos. ref16");
+                                    }
+                                }
+                                else if (izq is double)
+                                {
+                                    if (der is int)
+                                    {
+                                        if ((int)der != 0)
+                                        {
+                                            result = (double)izq % (int)der;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error semantico: el denominador no puede cer igual a cero. ref18");
+                                        }
+                                    }
+                                    else if (der is double)
+                                    {
+                                        if ((double)der != 0)
+                                        {
+                                            result = (double)izq % (double)der;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error semantico: el denominador no puede cer igual a cero. ref18");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se pueden dividir los valores. ambos deben ser numericos. ref 17");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error semantico: no se pueden dividir los valores. ambos deben ser numericos. ref15");
+                                }
+                            }
+                            else if (node.ChildNodes[1].Token.Value.ToString().Equals("^")) { //expresion exponente: ^
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int)
+                                {
+                                    if (der is int)
+                                    {
+                                        result = (int)izq - (int)der;
+                                    }
+                                    else if (der is double)
+                                    {
+                                        result = (int)izq - (double)der;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se pueden restar los valores. ambos deben ser numericos. ref16");
+                                    }
+                                }
+                                else if (izq is double)
+                                {
+                                    if (der is int)
+                                    {
+                                        result = (double)izq - (int)der;
+                                    }
+                                    else if (der is double)
+                                    {
+                                        result = (double)izq - (double)der;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se pueden restar los valores. ambos deben ser numericos. ref 17");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error semantico: no se pueden restar los valores. ambos deben ser numericos. ref15");
+                                }
                             }
                         }
                         break;
@@ -272,7 +535,17 @@ namespace Proyecto1
                                     variables_temp.lista[i].tipo=tipo;
                                     if (lst_variables.buscar(variables_temp.lista[i].id) == null)
                                     {
-                                        lst_variables.agregar(variables_temp.lista[i]);
+                                        if ((tipo.Equals("boolean") && variables_temp.lista[i].valor is bool) ||
+                                            (tipo.Equals("entero") && variables_temp.lista[i].valor is int) ||
+                                            (tipo.Equals("doble") && variables_temp.lista[i].valor is double) ||
+                                            (tipo.Equals("caracter") && variables_temp.lista[i].valor is string) ||
+                                            (tipo.Equals("cadena") && variables_temp.lista[i].valor is string))
+                                        {
+                                            lst_variables.agregar(variables_temp.lista[i]);
+                                        }
+                                        else {
+                                            Console.WriteLine("Error semantico: no se puede asignar un tipo diferente a la variable: "+tipo.ToString()+" ref12");
+                                        }
                                     }
                                     else {
                                         Console.WriteLine("Error semantico: la variable ya ha sido declarada antes. "+variables_temp.lista[i].id);
@@ -287,7 +560,18 @@ namespace Proyecto1
                                     variables_temp.lista[i].tipo = tipo;
                                     if (lst_variables.buscar(variables_temp.lista[i].id) == null)
                                     {
-                                        lst_variables.agregar(variables_temp.lista[i]);
+                                        if ((tipo.Equals("boolean") && variables_temp.lista[i].valor is bool) ||
+                                            (tipo.Equals("entero") && variables_temp.lista[i].valor is int) ||
+                                            (tipo.Equals("doble") && variables_temp.lista[i].valor is double) ||
+                                            (tipo.Equals("caracter") && variables_temp.lista[i].valor is string) ||
+                                            (tipo.Equals("cadena") && variables_temp.lista[i].valor is string))
+                                        {
+                                            lst_variables.agregar(variables_temp.lista[i]);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error semantico: no se puede asignar un tipo diferente a la variable: " + tipo.ToString() + " ref13");
+                                        }
                                     }
                                     else
                                     {
@@ -304,7 +588,18 @@ namespace Proyecto1
                                 variables_temp.lista[i].tipo = tipo;
                                 if (lst_variables.buscar(variables_temp.lista[i].id) == null)
                                 {
-                                    lst_variables.agregar(variables_temp.lista[i]);
+                                    if ((tipo.Equals("boolean") && variables_temp.lista[i].valor is bool) ||
+                                        (tipo.Equals("entero") && variables_temp.lista[i].valor is int) ||
+                                        (tipo.Equals("doble") && variables_temp.lista[i].valor is double) ||
+                                        (tipo.Equals("caracter") && variables_temp.lista[i].valor is string) ||
+                                        (tipo.Equals("cadena") && variables_temp.lista[i].valor is string))
+                                    {
+                                        lst_variables.agregar(variables_temp.lista[i]);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se puede asignar un tipo diferente a la variable: " + tipo.ToString() + " ref14");
+                                    }
                                 }
                                 else
                                 {
@@ -320,7 +615,18 @@ namespace Proyecto1
                                 variables_temp.lista[i].tipo = tipo;
                                 if (lst_variables.buscar(variables_temp.lista[i].id) == null)
                                 {
-                                    lst_variables.agregar(variables_temp.lista[i]);
+                                    if ((tipo.Equals("boolean") && variables_temp.lista[i].valor is bool) ||
+                                        (tipo.Equals("entero") && variables_temp.lista[i].valor is int) ||
+                                        (tipo.Equals("doble") && variables_temp.lista[i].valor is double) ||
+                                        (tipo.Equals("caracter") && variables_temp.lista[i].valor is string) ||
+                                        (tipo.Equals("cadena") && variables_temp.lista[i].valor is string))
+                                    {
+                                        lst_variables.agregar(variables_temp.lista[i]);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se puede asignar un tipo diferente a la variable: " + tipo.ToString() + " ref15");
+                                    }
                                 }
                                 else
                                 {

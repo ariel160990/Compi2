@@ -17,10 +17,12 @@ namespace Proyecto1
          */
         public string tipo;
         public object valor;
+        public bool keep;
         public Variable() {
             id = "";
             tipo = "";
             valor = null;
+            keep = false;
         }
     }
 }
