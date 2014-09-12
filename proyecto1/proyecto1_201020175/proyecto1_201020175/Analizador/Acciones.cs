@@ -449,35 +449,35 @@ namespace Proyecto1
                                 {
                                     if (der is int)
                                     {
-                                        result = (int)izq - (int)der;
-                                    }
+                                        result = Math.Pow((int)izq, (int)der);
+                                    }   
                                     else if (der is double)
                                     {
-                                        result = (int)izq - (double)der;
+                                        result = Math.Pow((int)izq, (double)der);
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Error semantico: no se pueden restar los valores. ambos deben ser numericos. ref16");
+                                        Console.WriteLine("Error semantico: no se pueden aplicar exponencia. ambos deben ser numericos. ref17");
                                     }
                                 }
                                 else if (izq is double)
                                 {
                                     if (der is int)
                                     {
-                                        result = (double)izq - (int)der;
+                                        result = Math.Pow((double)izq, (int)der);
                                     }
                                     else if (der is double)
                                     {
-                                        result = (double)izq - (double)der;
+                                        result = Math.Pow((double)izq,(double)der);
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Error semantico: no se pueden restar los valores. ambos deben ser numericos. ref 17");
+                                        Console.WriteLine("Error semantico: no se pueden aplicar exponencia. ambos deben ser numericos. ref17");
                                     }
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Error semantico: no se pueden restar los valores. ambos deben ser numericos. ref15");
+                                    Console.WriteLine("Error semantico: no se pueden aplicar exponencia. ambos deben ser numericos. ref15");
                                 }
                             }
                         }
