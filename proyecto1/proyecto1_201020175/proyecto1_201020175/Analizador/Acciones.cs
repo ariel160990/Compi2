@@ -450,7 +450,6 @@ namespace Proyecto1
                                     if (der is int)
                                     {
                                         result = Math.Pow((int)izq, (int)der);
-<<<<<<< HEAD
                                     }
                                     else if (der is double)
                                     {
@@ -459,27 +458,13 @@ namespace Proyecto1
                                     else
                                     {
                                         Console.WriteLine("Error semantico: no se puede usar la funcion exponente. ambos deben ser numericos. ref16");
-=======
                                     }   
-                                    else if (der is double)
-                                    {
-                                        result = Math.Pow((int)izq, (double)der);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Error semantico: no se pueden aplicar exponencia. ambos deben ser numericos. ref17");
->>>>>>> origin/master
-                                    }
                                 }
                                 else if (izq is double)
                                 {
                                     if (der is int)
                                     {
-<<<<<<< HEAD
                                         result = Math.Pow((double)izq,(int)der);
-=======
-                                        result = Math.Pow((double)izq, (int)der);
->>>>>>> origin/master
                                     }
                                     else if (der is double)
                                     {
@@ -487,11 +472,7 @@ namespace Proyecto1
                                     }
                                     else
                                     {
-<<<<<<< HEAD
                                         Console.WriteLine("Error semantico: no se puede usar la funcion exponente. ambos deben ser numericos. ref 17");
-=======
-                                        Console.WriteLine("Error semantico: no se pueden aplicar exponencia. ambos deben ser numericos. ref17");
->>>>>>> origin/master
                                     }
                                 }
                                 else
@@ -522,12 +503,132 @@ namespace Proyecto1
                                         Console.WriteLine("Error semantico: no se puede comparar datos de diferentes tipo. ref23");
                                     }
                                 } else if (izq is string) {
-                                    if (der is int) { } else if (der is double) { } else if (der is string) {
+                                    if (der is int) {
+                                        Console.WriteLine("Error semantico: no se pued comparar datos de diferente tipo. ref26");
+                                    } else if (der is double) {
+                                        Console.WriteLine("Error semantico: no se pued comparar datos de diferente tipo. ref25");
+                                    } else if (der is string) {
+                                        string vizq = (string)izq;
+                                        string vder = (string)der;
+                                        result = vizq.Equals(vder);
                                     } else {
                                         Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref25");
                                     }
                                 } else {
                                     Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref20");
+                                }
+                            }else if(node.ChildNodes[1].Token.Value.ToString().Equals("!=")){//expresion de comparacion no igual: !=
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int) {
+                                    if (der is int) {
+                                        result = ((int)izq != (int)der);
+                                    } else if (der is double) {
+                                        result = ((int)izq != (double)der);
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref29");
+                                    }
+                                } else if (izq is double) {
+                                    if (der is int) {
+                                        result = ((int)izq != (double)der);
+                                    } else if (der is double) {
+                                        result = ((double)izq != (double)der);
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref28");
+                                    }
+                                } else {
+                                    Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref27");
+                                }
+                            }else if(node.ChildNodes[1].Token.Value.ToString().Equals(">")){//expresion de comparacion mayor que: >
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int) {
+                                    if (der is int) {
+                                        result = (int)izq > (int)der;
+                                    } else if (der is double) {
+                                        result = (int)izq > (double)der;
+                                    } else {
+                                        Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en >. ref32");
+                                    }
+                                } else if (izq is double) {
+                                    if (der is int) {
+                                        result = (double)izq > (int)der;
+                                    } else if (der is double) {
+                                        result = (double)izq > (double)der;
+                                    } else {
+                                        Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en >. ref31");
+                                    }
+                                } else {
+                                    Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en >. ref30");
+                                }
+                            }
+                            else if (node.ChildNodes[1].Token.Value.ToString().Equals("<")) { //expresion de comparacion menor que: <
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int) {
+                                    if (der is int) {
+                                        result = (int)izq < (int)der;
+                                    } else if (der is double) {
+                                        result = (int)izq < (double)der;
+                                    } else {
+                                        Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en <. ref35");
+                                    }
+                                } else if (izq is double) {
+                                    if (der is int) {
+                                        result = (double)izq < (int)der;
+                                    } else if (der is double) {
+                                        result = (double)izq < (double)der;
+                                    } else {
+                                        Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en <. ref34");
+                                    }
+                                } else {
+                                    Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en <. ref33");
+                                }
+                            }
+                            else if (node.ChildNodes[1].Token.Value.ToString().Equals("<")){ //expresion de comparacion menor que: >=
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int){
+                                    if (der is int){
+                                        result = (int)izq >= (int)der;
+                                    }else if (der is double){
+                                        result = (int)izq >= (double)der;
+                                    }else{
+                                        Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en >=. ref36");
+                                    }
+                                }else if (izq is double){
+                                    if (der is int){
+                                        result = (double)izq >= (int)der;
+                                    }else if (der is double){
+                                        result = (double)izq >= (double)der;
+                                    }else{
+                                        Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en >=. ref37");
+                                    }
+                                }else{
+                                    Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en >=. ref38");
+                                }
+                            }
+                            else if (node.ChildNodes[1].Token.Value.ToString().Equals("<")){ //expresion de comparacion menor que: <=
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int){
+                                    if (der is int){
+                                        result = (int)izq <= (int)der;
+                                    }else if (der is double){
+                                        result = (int)izq <= (double)der;
+                                    }else{
+                                        Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en <=. ref39");
+                                    }
+                                }else if (izq is double){
+                                    if (der is int){
+                                        result = (double)izq <= (int)der;
+                                    }else if (der is double){
+                                        result = (double)izq <= (double)der;
+                                    }else{
+                                        Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en <=. ref40");
+                                    }
+                                }else{
+                                    Console.WriteLine("Error se mantico: no se puede comparar valores que no sean numericos en <=. ref41");
                                 }
                             }
                         }
