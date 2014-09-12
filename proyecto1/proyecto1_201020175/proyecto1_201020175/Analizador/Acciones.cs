@@ -450,6 +450,16 @@ namespace Proyecto1
                                     if (der is int)
                                     {
                                         result = Math.Pow((int)izq, (int)der);
+<<<<<<< HEAD
+                                    }
+                                    else if (der is double)
+                                    {
+                                        result = Math.Pow((int)izq,(double)der);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se puede usar la funcion exponente. ambos deben ser numericos. ref16");
+=======
                                     }   
                                     else if (der is double)
                                     {
@@ -458,13 +468,18 @@ namespace Proyecto1
                                     else
                                     {
                                         Console.WriteLine("Error semantico: no se pueden aplicar exponencia. ambos deben ser numericos. ref17");
+>>>>>>> origin/master
                                     }
                                 }
                                 else if (izq is double)
                                 {
                                     if (der is int)
                                     {
+<<<<<<< HEAD
+                                        result = Math.Pow((double)izq,(int)der);
+=======
                                         result = Math.Pow((double)izq, (int)der);
+>>>>>>> origin/master
                                     }
                                     else if (der is double)
                                     {
@@ -472,12 +487,47 @@ namespace Proyecto1
                                     }
                                     else
                                     {
+<<<<<<< HEAD
+                                        Console.WriteLine("Error semantico: no se puede usar la funcion exponente. ambos deben ser numericos. ref 17");
+=======
                                         Console.WriteLine("Error semantico: no se pueden aplicar exponencia. ambos deben ser numericos. ref17");
+>>>>>>> origin/master
                                     }
                                 }
                                 else
                                 {
                                     Console.WriteLine("Error semantico: no se pueden aplicar exponencia. ambos deben ser numericos. ref15");
+                                }
+                            }else if(node.ChildNodes[1].Token.Value.ToString().Equals("==")){ //expresion de comparacion igual: ==
+                                object izq = action(node.ChildNodes[0]);
+                                object der = action(node.ChildNodes[2]);
+                                if (izq is int) {
+                                    if (der is int) {
+                                        result = (int)izq == (int)der;
+                                    } else if (der is double) {
+                                        result = (int)izq == (double)der;
+                                    } else if (der is string) {
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref22");
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref21");
+                                    }
+                                } else if (izq is double) {
+                                    if (der is int) {
+                                        result = (double)izq == (int)der;
+                                    } else if (der is double) {
+                                        result = (double)izq == (double)der;
+                                    } else if (der is string) {
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref24");
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferentes tipo. ref23");
+                                    }
+                                } else if (izq is string) {
+                                    if (der is int) { } else if (der is double) { } else if (der is string) {
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref25");
+                                    }
+                                } else {
+                                    Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref20");
                                 }
                             }
                         }
