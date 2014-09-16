@@ -79,6 +79,11 @@ namespace Proyecto1
                         llamada_a_funcion = new NonTerminal("llamada_a_funcion"),
                         lista_param = new NonTerminal("lista_param"),
                         arreglo = new NonTerminal("arreglo"),
+                        arreglo1 = new NonTerminal("arreglo1"),
+                        arreglo2 = new NonTerminal("arreglo2"),
+                        lista_dim = new NonTerminal("lista_dim"),
+                        lista_ids_arreglo = new NonTerminal("lista_ids_arreglo"),
+                        dim_arreglo = new NonTerminal("dim_arreglo"),
                         instrucciones = new NonTerminal("instrucciones");
             s0.Rule = def_pista;
             def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent + instrucciones + Dedent
@@ -115,18 +120,21 @@ namespace Proyecto1
                     | cadena
                     | id
                     | numero
-                //| doble
                     | llamada_a_funcion
-                    | caracter
-                //| ToTerm("verdadero")
-                //| ToTerm("falso");
+                    | caracter                
                     | valor_bool;
-            arreglo.Rule = arreglo + "," + "{" + exp + "}"
-                    | ToTerm("{") + exp + "}";
+            arreglo.Rule = ToTerm("{") + arreglo1 + "}";
+            arreglo1.Rule = MakePlusRule(arreglo1, ToTerm(","),arreglo)
+                    | arreglo2;
+                    //| arreglo;
+            arreglo2.Rule = MakePlusRule(arreglo2, ToTerm(","), exp);
             dec_var.Rule = ToTerm("keep") + "var" + tipo_var + lista_ids + Eos
-                    | ToTerm("keep") + "var" + tipo_var + "arreglo" + lista_ids + Eos
+                    | ToTerm("keep") + "var" + tipo_var + "arreglo" + lista_ids_arreglo + lista_dim + "=" + arreglo + Eos
                     | ToTerm("var") + tipo_var + lista_ids+ Eos
-                    |  ToTerm("var") + tipo_var + "arreglo" + lista_ids + Eos;
+                    | ToTerm("var") + tipo_var + "arreglo" + lista_ids_arreglo + lista_dim + "=" + arreglo + Eos;
+            lista_dim.Rule = MakePlusRule(lista_dim,dim_arreglo);
+            dim_arreglo.Rule = ToTerm("[") + exp + "]";
+            lista_ids_arreglo.Rule = MakePlusRule(lista_ids_arreglo,ToTerm(","),id);
             tipo_var.Rule = ToTerm("entero")
                     | ToTerm("doble")
                     | ToTerm("boolean")

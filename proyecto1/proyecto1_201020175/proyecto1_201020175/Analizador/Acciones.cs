@@ -15,6 +15,17 @@ namespace Proyecto1
             return action(pt_node);
         }
 
+        public object mapeo(int[] indices, int[] totales, int nivel)
+        {
+            int retorno;
+            if (nivel > 0){
+                retorno = (int)mapeo(indices, totales, nivel - 1) * totales[totales.Length - nivel - 1] + indices[nivel];
+            }else{
+                retorno = indices[nivel];
+            }
+            return retorno;
+        }
+
         public Object action(ParseTreeNode node)
         {
             Object result = null;
@@ -722,27 +733,6 @@ namespace Proyecto1
                         }
                         break;
                     }
-                case "numero"://listo
-                    {
-                        result = node.Token.Value;
-                        break;
-                    }
-                case "valor_bool"://listo
-                    {
-                        if (node.Token.Value.ToString().Equals("verdadero")){
-                            result = true;
-                        }else {
-                            result = false;
-                        }
-                        break;
-                    }
-                case "caracter"://listo
-                    {
-                        string cad = (string)node.Token.Value;
-                        cad = cad.Substring(1, cad.Length - 2);
-                        result = cad;
-                        break;
-                    }
                 case "cadena"://listo
                     {
                         string cad = (string)node.Token.Value;
@@ -761,9 +751,125 @@ namespace Proyecto1
                         }
                         break;
                     }
+                case "numero"://listo
+                    {
+                        result = node.Token.Value;
+                        break;
+                    }
+                case "caracter"://listo
+                    {
+                        string cad = (string)node.Token.Value;
+                        cad = cad.Substring(1, cad.Length - 2);
+                        result = cad;
+                        break;
+                    }
+                case "valor_bool"://listo
+                    {
+                        if (node.Token.Value.ToString().Equals("verdadero"))
+                        {
+                            result = true;
+                        }
+                        else
+                        {
+                            result = false;
+                        }
+                        break;
+                    }
+                case "arreglo"://listo
+                    {
+                        List<object> lstExp = new List<object>();
+                        lstExp = (List<object>)action(node.ChildNodes[1]);
+                        result = lstExp;
+                        break;
+                    }
+                case "arreglo1"://listo
+                    {
+                        List<object> lstExp = new List<object>();
+                        List<object> lsttemp;
+                        if (node.ChildNodes[0].Term.Name.Equals("arreglo")) {
+                            string dimensiones="";
+                            bool dim_iguales = true;
+                            for (int i = 0; i < node.ChildNodes.Count; i++){
+                                lsttemp = (List<object>)action(node.ChildNodes[i]);
+                                if (i > 0) {
+                                    string dim=lsttemp.Last().ToString();
+                                    if (dimensiones.Equals(dim)) {
+                                    } else {
+                                        dim_iguales = false;
+                                    }
+                                } else { 
+                                    string dim=lsttemp.Last().ToString();
+                                    dimensiones = dim;
+                                }
+                            }
+                            if (dim_iguales) {
+                                for (int i = 0; i < node.ChildNodes.Count; i++){
+                                    lsttemp = (List<object>)action(node.ChildNodes[i]);
+                                    for (int ii = 0; ii < lsttemp.Count; ii++){
+                                        if (ii + 1 == lsttemp.Count){
+                                        }else{
+                                            lstExp.Add(lsttemp[ii]);
+                                        }
+                                    }
+                                }
+                                dimensiones = dimensiones + "," + node.ChildNodes.Count;
+                                lstExp.Add(dimensiones.ToString());
+                            } else {
+                                Console.WriteLine("Error semantico: las dimensiones de los arreglos no son iguales. "+node.Term.Name);
+                            }
+                        } else if (node.ChildNodes[0].Term.Name.Equals("arreglo2")) {
+                            lstExp = (List<object>)action(node.ChildNodes[0]);
+                        } else {
+                            Console.WriteLine("Error: ha ocurrido error en arreglo. "+node.ChildNodes[0].Term.Name);
+                        }
+                        result = lstExp;
+                        break;
+                    }
+                case "arreglo2":
+                    {
+                        List<object> lstExp = new List<object>();
+                        object nuevotemp;
+                        for (int i = 0; i < node.ChildNodes.Count; i++) {
+                            nuevotemp = action(node.ChildNodes[i]);
+                            if (nuevotemp != null){
+                                lstExp.Add(nuevotemp);
+                            }else {
+                                Console.WriteLine("Error semantico: no se ha asignado ningun valor a arreglo. ref60");
+                            }
+                        }
+                        lstExp.Add(node.ChildNodes.Count);
+                        result = lstExp;
+                        break;
+                    }
                 case "dec_var"://faltan declarar arreglos
                     {
-                        if (node.ChildNodes.Count == 4) {
+                        if (node.ChildNodes.Count == 3) {
+                            Variables variables_temp = (Variables)action(node.ChildNodes[2]);
+                            string tipo = (string)action(node.ChildNodes[1]);
+                            for (int i = 0; i < variables_temp.lista.Count; i++)
+                            {
+                                variables_temp.lista[i].tipo = tipo;
+                                if (lst_variables.buscar(variables_temp.lista[i].id) == null)
+                                {
+                                    if ((tipo.Equals("boolean") && variables_temp.lista[i].valor is bool) ||
+                                        (tipo.Equals("entero") && variables_temp.lista[i].valor is int) ||
+                                        (tipo.Equals("doble") && variables_temp.lista[i].valor is double) ||
+                                        (tipo.Equals("caracter") && variables_temp.lista[i].valor is string) ||
+                                        (tipo.Equals("cadena") && variables_temp.lista[i].valor is string))
+                                    {
+                                        lst_variables.agregar(variables_temp.lista[i]);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se puede asignar un tipo diferente a la variable: " + tipo.ToString() + " ref15");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error semantico: la variable ya ha sido declarada antes. " + variables_temp.lista[i].id);
+                                }
+                            }
+                        }else if (node.ChildNodes.Count == 4) {
                             if (node.ChildNodes[0].Token.Value.Equals("keep"))
                             {
                                 Variables variables_temp = (Variables)action(node.ChildNodes[3]);
@@ -844,33 +950,41 @@ namespace Proyecto1
                                 }
                             }
                         }
-                        else if (node.ChildNodes.Count == 3) {
-                            Variables variables_temp = (Variables)action(node.ChildNodes[2]);
-                            string tipo = (string)action(node.ChildNodes[1]);
-                            for (int i = 0; i < variables_temp.lista.Count; i++)
-                            {
-                                variables_temp.lista[i].tipo = tipo;
-                                if (lst_variables.buscar(variables_temp.lista[i].id) == null)
-                                {
-                                    if ((tipo.Equals("boolean") && variables_temp.lista[i].valor is bool) ||
-                                        (tipo.Equals("entero") && variables_temp.lista[i].valor is int) ||
-                                        (tipo.Equals("doble") && variables_temp.lista[i].valor is double) ||
-                                        (tipo.Equals("caracter") && variables_temp.lista[i].valor is string) ||
-                                        (tipo.Equals("cadena") && variables_temp.lista[i].valor is string))
-                                    {
-                                        lst_variables.agregar(variables_temp.lista[i]);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Error semantico: no se puede asignar un tipo diferente a la variable: " + tipo.ToString() + " ref15");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Error semantico: la variable ya ha sido declarada antes. " + variables_temp.lista[i].id);
-                                }
-                            }
+                        else if (node.ChildNodes.Count == 8) { 
+                            //var entero arreglo arr [3][3][2] = {{{1,2,3},{1,2,3},{1,2,3}},{{1,2,3},{1,2,3},{1,2,3}}}
+                            List<object> lstExp = (List<object>)action(node.ChildNodes[7]);
+                            List<object> lstDim = (List<object>)action(node.ChildNodes[5]);
+                            string tipovar = (string)action(node.ChildNodes[2]);
+                            List<string> lstids = (List<string>)action(node.ChildNodes[4]);
                         }
+                        break;
+                    }
+                case "lista_dim":
+                    {
+                        List<object> listaDim = new List<object>();
+                        for (int i = 0; i < node.ChildNodes.Count; i++) {
+                            listaDim.Add(action(node.ChildNodes[i]));
+                        }
+                        result = listaDim;
+                        break;
+                    }
+                case "dim_arreglo":
+                    {
+                        object recibe = action(node.ChildNodes[1]);
+                        if (recibe is int){
+                            result = recibe;
+                        }else {
+                            Console.WriteLine("Erro semantico: los indices de un arreglo se indican con una expresion que genra entero. refdim_arreglo");
+                        }
+                        break;
+                    }
+                case "lista_ids_arreglo":
+                    {
+                        List<string> listaids = new List<string>();
+                        for (int i = 0; i < node.ChildNodes.Count; i++) {
+                            listaids.Add((string)action(node.ChildNodes[i]));
+                        }
+                        result = listaids;
                         break;
                     }
                 case "asig_var":
