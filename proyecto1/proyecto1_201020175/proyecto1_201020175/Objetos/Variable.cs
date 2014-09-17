@@ -21,6 +21,7 @@ namespace Proyecto1
         public int nivel;
         public int vof;//0 nada, 1 var, 2 func
         public bool arreglo;
+        public string dimensiones;
         public Variable() {
             id = "";
             tipo = "";
@@ -29,6 +30,7 @@ namespace Proyecto1
             nivel = 0;
             vof = 0;
             arreglo = false;
+            dimensiones="";
         }
     }
 }

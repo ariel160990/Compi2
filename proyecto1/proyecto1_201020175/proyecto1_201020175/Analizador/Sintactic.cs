@@ -126,7 +126,6 @@ namespace Proyecto1
             arreglo.Rule = ToTerm("{") + arreglo1 + "}";
             arreglo1.Rule = MakePlusRule(arreglo1, ToTerm(","),arreglo)
                     | arreglo2;
-                    //| arreglo;
             arreglo2.Rule = MakePlusRule(arreglo2, ToTerm(","), exp);
             dec_var.Rule = ToTerm("keep") + "var" + tipo_var + lista_ids + Eos
                     | ToTerm("keep") + "var" + tipo_var + "arreglo" + lista_ids_arreglo + lista_dim + "=" + arreglo + Eos

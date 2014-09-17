@@ -952,10 +952,69 @@ namespace Proyecto1
                         }
                         else if (node.ChildNodes.Count == 8) { 
                             //var entero arreglo arr [3][3][2] = {{{1,2,3},{1,2,3},{1,2,3}},{{1,2,3},{1,2,3},{1,2,3}}}
-                            List<object> lstExp = (List<object>)action(node.ChildNodes[7]);
-                            List<object> lstDim = (List<object>)action(node.ChildNodes[5]);
                             string tipovar = (string)action(node.ChildNodes[2]);
                             List<string> lstids = (List<string>)action(node.ChildNodes[4]);
+                            List<object> lstExp = (List<object>)action(node.ChildNodes[7]);
+                            List<object> lstDim = (List<object>)action(node.ChildNodes[5]);
+                            string dim1 = "";
+                            string dim2 = "";
+                            for(int i=0;i<lstDim.Count;i++){
+                                if (i > 0) {
+                                    dim1 = dim1 + ",";
+                                }
+                                dim1 = dim1 + ((int)lstDim[i]).ToString();
+                            }
+                            dim2 = lstExp.Last().ToString();
+
+                            bool exp_tipo_iguales = true;
+                            for (int i = 0; i < lstExp.Count-1; i++) { 
+                                if(tipovar.Equals("entero")){
+                                    if (lstExp[i] is int) { }else{
+                                        exp_tipo_iguales = false;
+                                    }
+                                }else if(tipovar.Equals("doble")){
+                                    if (lstExp[i] is double) { }else{
+                                        exp_tipo_iguales = false;
+                                    }
+                                }else if(tipovar.Equals("cadena")){
+                                    if (lstExp[i] is string) { }else{
+                                        exp_tipo_iguales = false;
+                                    }
+                                }else if(tipovar.Equals("caracter")){
+                                    if (lstExp[i] is string) { }else{
+                                        exp_tipo_iguales = false;
+                                    }
+                                }else if(tipovar.Equals("boolean")){
+                                    if(lstExp[i] is bool){}else{
+                                        exp_tipo_iguales = false;
+                                    }
+                                }
+                            }
+
+                            if (exp_tipo_iguales) {
+                                if (dim1.Equals(dim2)) {
+                                    for (int i = 0; i < lstids.Count; i++) {
+                                        Variable vartemp = lst_variables.buscar(lstids[i]);
+                                        if (vartemp == null) {
+                                            vartemp = new Variable();
+                                            vartemp.arreglo = true;
+                                            vartemp.dimensiones = dim1;
+                                            vartemp.keep = true;
+                                            vartemp.id = lstids[i].ToString();
+                                            lstExp.RemoveAt(lstExp.Count - 1);
+                                            vartemp.valor = lstExp;
+                                            lst_variables.agregar(vartemp);
+                                        } else {
+                                            Console.WriteLine("Error semantico: la variabla "+ lstids[i].ToString() +" ya ha sido declarada, por eso no se puede declarar como arreglo. ref64");
+                                        }
+                                    }
+                                } else {
+                                    Console.WriteLine("Error semantico: la dimension: "+ dim1 + " no es igual a la dimension "+dim2+"   ref63");
+                                }
+                            } else {
+                                Console.Write("Error semantico: las expresiones del arreglo deben ser de tipo "+tipovar+"    ref63");
+                            }
+
                         }
                         break;
                     }
