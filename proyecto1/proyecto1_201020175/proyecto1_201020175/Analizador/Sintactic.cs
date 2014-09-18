@@ -122,7 +122,8 @@ namespace Proyecto1
                     | numero
                     | llamada_a_funcion
                     | caracter                
-                    | valor_bool;
+                    | valor_bool
+                    | id + lista_dim;
             arreglo.Rule = ToTerm("{") + arreglo1 + "}";
             arreglo1.Rule = MakePlusRule(arreglo1, ToTerm(","),arreglo)
                     | arreglo2;
@@ -152,8 +153,7 @@ namespace Proyecto1
                     | ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent + "sino" + Eos + Indent + instrucciones + Dedent;
             //sentencia switch
             sen_switch.Rule = ToTerm("switch") + "(" + exp + ")" + Eos + Indent + lista_caso + Dedent;
-            lista_caso.Rule = lista_caso + sen_caso
-                    | sen_caso;
+            lista_caso.Rule = MakePlusRule(lista_caso,sen_caso);
             sen_caso.Rule = ToTerm("caso") + exp + Eos + Indent + instrucciones + Dedent
                     | ToTerm("default") + exp + Eos + Indent + instrucciones + Dedent;
             //sentencia para

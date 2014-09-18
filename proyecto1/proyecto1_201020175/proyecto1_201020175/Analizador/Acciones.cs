@@ -225,6 +225,21 @@ namespace Proyecto1
                                 else {
                                     Console.WriteLine("Error semantico: la variable no ha sido declarada. ref8");
                                 }
+                            }else if(node.ChildNodes[1].Term.Name.Equals("lista_dim")){
+                                //pendiente
+                                List<object> lstDim = (List<object>)action(node.ChildNodes[1]);
+                                Variable vartemp = lst_variables.buscar(node.ChildNodes[0].Token.Value.ToString());
+                                if (vartemp.arreglo) {
+                                    int dim1 = lstDim.Count();
+                                    int dim2 = vartemp.dimensiones.Split(',').Count();
+                                    if (dim1 == dim2) {
+
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se puede obtener el indice por que las dimensiones no son las correctas para el arreglo "+ vartemp.id+" ref67");
+                                    }
+                                } else {
+                                    Console.Write("Error semantico: la variable no es un arreglo");
+                                }
                             }
                         }
                         else if (node.ChildNodes.Count == 3) {
@@ -950,7 +965,104 @@ namespace Proyecto1
                                 }
                             }
                         }
-                        else if (node.ChildNodes.Count == 8) { 
+                        else if (node.ChildNodes.Count == 7) {
+                            //var entero arreglo arr [3][3][2] = {{{1,2,3},{1,2,3},{1,2,3}},{{1,2,3},{1,2,3},{1,2,3}}}
+                            string tipovar = (string)action(node.ChildNodes[1]);
+                            List<string> lstids = (List<string>)action(node.ChildNodes[3]);
+                            List<object> lstDim = (List<object>)action(node.ChildNodes[4]);
+                            List<object> lstExp = (List<object>)action(node.ChildNodes[6]);
+                            string dim1 = "";
+                            string dim2 = "";
+                            for (int i = 0; i < lstDim.Count; i++)
+                            {
+                                if (i > 0)
+                                {
+                                    dim1 = dim1 + ",";
+                                }
+                                dim1 = dim1 + ((int)lstDim[i]).ToString();
+                            }
+                            dim2 = lstExp.Last().ToString();
+                            lstExp.RemoveAt(lstExp.Count - 1);
+                            bool exp_tipo_iguales = true;
+                            for (int i = 0; i < lstExp.Count - 1; i++)
+                            {
+                                if (tipovar.Equals("entero"))
+                                {
+                                    if (lstExp[i] is int) { }
+                                    else
+                                    {
+                                        exp_tipo_iguales = false;
+                                    }
+                                }
+                                else if (tipovar.Equals("doble"))
+                                {
+                                    if (lstExp[i] is double) { }
+                                    else
+                                    {
+                                        exp_tipo_iguales = false;
+                                    }
+                                }
+                                else if (tipovar.Equals("cadena"))
+                                {
+                                    if (lstExp[i] is string) { }
+                                    else
+                                    {
+                                        exp_tipo_iguales = false;
+                                    }
+                                }
+                                else if (tipovar.Equals("caracter"))
+                                {
+                                    if (lstExp[i] is string) { }
+                                    else
+                                    {
+                                        exp_tipo_iguales = false;
+                                    }
+                                }
+                                else if (tipovar.Equals("boolean"))
+                                {
+                                    if (lstExp[i] is bool) { }
+                                    else
+                                    {
+                                        exp_tipo_iguales = false;
+                                    }
+                                }
+                            }
+                            if (exp_tipo_iguales)
+                            {
+                                if (dim1.Equals(dim2))
+                                {
+                                    for (int i = 0; i < lstids.Count; i++)
+                                    {
+                                        Variable vartemp = lst_variables.buscar(lstids[i]);
+                                        if (vartemp == null)
+                                        {
+                                            vartemp = new Variable();
+                                            vartemp.arreglo = true;
+                                            vartemp.dimensiones = dim1;
+                                            vartemp.keep =false;
+                                            vartemp.id = lstids[i].ToString();
+                                            //lstExp.RemoveAt(lstExp.Count - 1);
+                                            vartemp.valor = lstExp;
+                                            lst_variables.agregar(vartemp);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error semantico: la variabla " + lstids[i].ToString() + " ya ha sido declarada, por eso no se puede declarar como arreglo. ref64");
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error semantico: la dimension: " + dim1 + " no es igual a la dimension " + dim2 + "   ref63");
+                                }
+                            }
+                            else
+                            {
+                                Console.Write("Error semantico: las expresiones del arreglo deben ser de tipo " + tipovar + "    ref63");
+                            }
+                        }
+                        else if (node.ChildNodes.Count == 8)
+                        {
                             //var entero arreglo arr [3][3][2] = {{{1,2,3},{1,2,3},{1,2,3}},{{1,2,3},{1,2,3},{1,2,3}}}
                             string tipovar = (string)action(node.ChildNodes[2]);
                             List<string> lstids = (List<string>)action(node.ChildNodes[4]);
@@ -958,63 +1070,93 @@ namespace Proyecto1
                             List<object> lstDim = (List<object>)action(node.ChildNodes[5]);
                             string dim1 = "";
                             string dim2 = "";
-                            for(int i=0;i<lstDim.Count;i++){
-                                if (i > 0) {
+                            for (int i = 0; i < lstDim.Count; i++)
+                            {
+                                if (i > 0)
+                                {
                                     dim1 = dim1 + ",";
                                 }
                                 dim1 = dim1 + ((int)lstDim[i]).ToString();
                             }
                             dim2 = lstExp.Last().ToString();
-
+                            lstExp.RemoveAt(lstExp.Count - 1);
                             bool exp_tipo_iguales = true;
-                            for (int i = 0; i < lstExp.Count-1; i++) { 
-                                if(tipovar.Equals("entero")){
-                                    if (lstExp[i] is int) { }else{
+                            for (int i = 0; i < lstExp.Count - 1; i++)
+                            {
+                                if (tipovar.Equals("entero"))
+                                {
+                                    if (lstExp[i] is int) { }
+                                    else
+                                    {
                                         exp_tipo_iguales = false;
                                     }
-                                }else if(tipovar.Equals("doble")){
-                                    if (lstExp[i] is double) { }else{
+                                }
+                                else if (tipovar.Equals("doble"))
+                                {
+                                    if (lstExp[i] is double) { }
+                                    else
+                                    {
                                         exp_tipo_iguales = false;
                                     }
-                                }else if(tipovar.Equals("cadena")){
-                                    if (lstExp[i] is string) { }else{
+                                }
+                                else if (tipovar.Equals("cadena"))
+                                {
+                                    if (lstExp[i] is string) { }
+                                    else
+                                    {
                                         exp_tipo_iguales = false;
                                     }
-                                }else if(tipovar.Equals("caracter")){
-                                    if (lstExp[i] is string) { }else{
+                                }
+                                else if (tipovar.Equals("caracter"))
+                                {
+                                    if (lstExp[i] is string) { }
+                                    else
+                                    {
                                         exp_tipo_iguales = false;
                                     }
-                                }else if(tipovar.Equals("boolean")){
-                                    if(lstExp[i] is bool){}else{
+                                }
+                                else if (tipovar.Equals("boolean"))
+                                {
+                                    if (lstExp[i] is bool) { }
+                                    else
+                                    {
                                         exp_tipo_iguales = false;
                                     }
                                 }
                             }
-
-                            if (exp_tipo_iguales) {
-                                if (dim1.Equals(dim2)) {
-                                    for (int i = 0; i < lstids.Count; i++) {
+                            if (exp_tipo_iguales)
+                            {
+                                if (dim1.Equals(dim2))
+                                {
+                                    for (int i = 0; i < lstids.Count; i++)
+                                    {
                                         Variable vartemp = lst_variables.buscar(lstids[i]);
-                                        if (vartemp == null) {
+                                        if (vartemp == null)
+                                        {
                                             vartemp = new Variable();
                                             vartemp.arreglo = true;
                                             vartemp.dimensiones = dim1;
                                             vartemp.keep = true;
                                             vartemp.id = lstids[i].ToString();
-                                            lstExp.RemoveAt(lstExp.Count - 1);
+                                            //lstExp.RemoveAt(lstExp.Count - 1);
                                             vartemp.valor = lstExp;
                                             lst_variables.agregar(vartemp);
-                                        } else {
-                                            Console.WriteLine("Error semantico: la variabla "+ lstids[i].ToString() +" ya ha sido declarada, por eso no se puede declarar como arreglo. ref64");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error semantico: la variabla " + lstids[i].ToString() + " ya ha sido declarada, por eso no se puede declarar como arreglo. ref64");
                                         }
                                     }
-                                } else {
-                                    Console.WriteLine("Error semantico: la dimension: "+ dim1 + " no es igual a la dimension "+dim2+"   ref63");
                                 }
-                            } else {
-                                Console.Write("Error semantico: las expresiones del arreglo deben ser de tipo "+tipovar+"    ref63");
+                                else
+                                {
+                                    Console.WriteLine("Error semantico: la dimension: " + dim1 + " no es igual a la dimension " + dim2 + "   ref63");
+                                }
                             }
-
+                            else
+                            {
+                                Console.Write("Error semantico: las expresiones del arreglo deben ser de tipo " + tipovar + "    ref63");
+                            }
                         }
                         break;
                     }
@@ -1052,8 +1194,7 @@ namespace Proyecto1
                             if (node.ChildNodes[1].Token.Value.ToString().Equals("=")) {
                                 Variable var_temp = lst_variables.buscar(node.ChildNodes[0].Token.Value.ToString());
                                 if (var_temp != null) {
-                                    if (var_temp.vof == 1)
-                                    {
+                                    if (var_temp.vof == 1){
                                         object val_temp = action(node.ChildNodes[2]);
                                         if (var_temp.tipo.Equals("entero")) {
                                             if (val_temp is int) {
@@ -1069,8 +1210,7 @@ namespace Proyecto1
                                             } else {
                                                 Console.WriteLine("Error semantico: error al asginar entero. ref63");
                                             }
-                                        }
-                                        else if (var_temp.tipo.Equals("doble")) {
+                                        }else if (var_temp.tipo.Equals("doble")) {
                                             if (val_temp is int) {
                                                 var_temp.valor = (int)val_temp;
                                             } else if (val_temp is double) {
@@ -1097,8 +1237,9 @@ namespace Proyecto1
                                         }
                                         else if (var_temp.tipo.Equals("caracter")) {//pendiente
                                             if (val_temp is string) { 
+
                                             }else if(val_temp is int){
-                                                
+       
                                             } else {
                                                 Console.WriteLine("Error semantico: error de tipo en asignacion de caracter. ref60");
                                             }
@@ -1165,6 +1306,34 @@ namespace Proyecto1
                             n.valor = action(node.ChildNodes[4]);
                             variables_temp.agregar(n);
                             result = variables_temp;
+                        }
+                        break;
+                    }
+                case "sen_si": 
+                    {
+                        if (node.ChildNodes.Count() == 5) {
+                            object resultado = action(node.ChildNodes[2]);
+                            if (resultado is bool)
+                            {
+                                if ((bool)resultado) {
+                                    action(node.ChildNodes[4]);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error semantico: la expresión de condición debe retornar booleano ref66");
+                            }
+                        }else if(node.ChildNodes.Count()==  7){
+                            object resultado = action(node.ChildNodes[2]);
+                            if (resultado is bool) {
+                                if ((bool)resultado) {
+                                    action(node.ChildNodes[4]);
+                                } else {
+                                    action(node.ChildNodes[6]);
+                                }
+                            } else {
+                                Console.WriteLine("Error semantico: la expresión de condición debe retornar booleano ref67");
+                            }
                         }
                         break;
                     }
