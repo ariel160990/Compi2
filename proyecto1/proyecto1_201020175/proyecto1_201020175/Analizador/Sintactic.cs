@@ -145,6 +145,7 @@ namespace Proyecto1
                     | id + "=" + exp
                     | id;
             asig_var.Rule = id + "=" + exp + Eos
+                    | id + lista_dim+ "=" + exp + Eos
                     | id + "+=" + exp + Eos
                     | id + "++" + Eos
                     | id + "--" + Eos;
