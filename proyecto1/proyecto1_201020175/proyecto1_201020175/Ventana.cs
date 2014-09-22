@@ -126,6 +126,23 @@ namespace Proyecto1
 
         private void Ventana_Load(object sender, EventArgs e)
         {
+            //Console.Beep(100, 10000);
+            //Console.Beep(10000, 100000);
+            /*double da = 2.212;
+            int db = (int)da;
+            Console.WriteLine("valor1: "+da);
+            Console.WriteLine("valor: "+db);
+            */
+            /*int ci = 40;
+            char ca = (char)ci;
+            Console.WriteLine("valor1: " + ci);
+            Console.WriteLine("valor: " + ca);
+            */
+
+            /*char ch = 'a';
+            int chs = (int)ch;
+            Console.WriteLine("write: "+chs);
+            */
             Console.WriteLine("lennnn: "+"\n".Length);
             string ab = "a";
             Console.WriteLine(ab.ToCharArray());

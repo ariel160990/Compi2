@@ -84,7 +84,9 @@ namespace Proyecto1
                         lista_dim = new NonTerminal("lista_dim"),
                         lista_ids_arreglo = new NonTerminal("lista_ids_arreglo"),
                         dim_arreglo = new NonTerminal("dim_arreglo"),
-                        instrucciones = new NonTerminal("instrucciones");
+                        instrucciones = new NonTerminal("instrucciones"),
+                        instrucciones_in = new NonTerminal("instrucciones_in"),
+                        instrucciones_in1 = new NonTerminal("instruccioens_in1");
             s0.Rule = def_pista;
             def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent + instrucciones + Dedent
                     | ToTerm("pista") + id + Eos + Indent + instrucciones + Dedent;
@@ -150,15 +152,15 @@ namespace Proyecto1
                     | id + "++" + Eos
                     | id + "--" + Eos;
             //sentencia si
-            sen_si.Rule = ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent
-                    | ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent + "sino" + Eos + Indent + instrucciones + Dedent;
+            sen_si.Rule = ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones_in + Dedent
+                    | ToTerm("si") + "(" + exp + ")" + Eos + Indent + instrucciones_in + Dedent + "sino" + Eos + Indent + instrucciones_in + Dedent;
             //sentencia switch
             sen_switch.Rule = ToTerm("switch") + "(" + exp + ")" + Eos + Indent + lista_caso + Dedent;
             lista_caso.Rule = MakePlusRule(lista_caso,sen_caso);
-            sen_caso.Rule = ToTerm("caso") + exp + Eos + Indent + instrucciones + Dedent
-                    | ToTerm("default") + exp + Eos + Indent + instrucciones + Dedent;
+            sen_caso.Rule = ToTerm("caso") + exp + Eos + Indent + instrucciones_in + Dedent
+                    | ToTerm("default") + exp + Eos + Indent + instrucciones_in + Dedent;
             //sentencia para
-            sen_para.Rule = ToTerm("para") + "(" + dec_para + ";" + exp + ";" + asig_para + ")" + Eos + Indent + instrucciones + Dedent;
+            sen_para.Rule = ToTerm("para") + "(" + dec_para + ";" + exp + ";" + asig_para + ")" + Eos + Indent + instrucciones_in + Dedent;
             dec_para.Rule = ToTerm("var") + tipo_var + id + "=" + exp
                     | asig_para;
             asig_para.Rule = id + "=" + exp
@@ -166,18 +168,18 @@ namespace Proyecto1
                     | id + "++"
                     | id + "--";
             //sentencia mientras
-            sen_mientras.Rule = ToTerm("mientras") + "(" + exp + ")" + Eos + Indent + instrucciones + Dedent;
+            sen_mientras.Rule = ToTerm("mientras") + "(" + exp + ")" + Eos + Indent + instrucciones_in + Dedent;
             //sentencia hacer
-            sen_hacer.Rule = ToTerm("hacer") + Eos + instrucciones + "mientras" + "(" + exp + ")" + Eos;
+            sen_hacer.Rule = ToTerm("hacer") + Eos + Indent + instrucciones_in + Dedent + "mientras" + "(" + exp + ")" + Eos;
             //funciones y procedimientos
-            sen_fun_proc.Rule = ToTerm("keep") + tipo_var + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones + Dedent
-                    | ToTerm("keep") + tipo_var + id + "(" + ")" + Eos + Indent + instrucciones + Dedent
-                    | ToTerm("keep") + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones + Dedent
-                    | ToTerm("keep") + id + "(" + ")" + Eos + Indent + instrucciones + Dedent
-                    | tipo_var + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones + Dedent
-                    | tipo_var + id + "(" + ")" + Eos + Indent + instrucciones + Dedent
-                    | id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones + Dedent
-                    | id + "(" + ")" + Eos + Indent + instrucciones + Dedent
+            sen_fun_proc.Rule = ToTerm("keep") + tipo_var + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent
+                    | ToTerm("keep") + tipo_var + id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent
+                    | ToTerm("keep") + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent
+                    | ToTerm("keep") + id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent
+                    | tipo_var + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent
+                    | tipo_var + id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent
+                    | id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent
+                    | id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent
                     | id + "(" + ")" + Eos
                     | id + "(" + lista_param + ")" + Eos;
             lista_dec_param.Rule = lista_dec_param + "," +tipo_var + id
@@ -201,16 +203,31 @@ namespace Proyecto1
             //{ { { 1, 2, 3 }, { 4, 5, 6 } },{ { 7, 8, 9 }, { 10, 11, 12 } } }
             instrucciones.Rule = instrucciones + asig_var
                     | instrucciones + dec_var
-                    | instrucciones + sen_si
-                    | instrucciones + sen_switch
-                    | instrucciones + sen_para
-                    | instrucciones + sen_mientras
-                    | instrucciones + sen_hacer
+                //| instrucciones + sen_si //
+                //  | instrucciones + sen_switch //
+                //  | instrucciones + sen_para //
+               //   | instrucciones + sen_mientras //
+                //  | instrucciones + sen_hacer //
                     | instrucciones + sen_fun_proc
-                    | instrucciones + "retorna" + exp + Eos
-                    | instrucciones + "salir" + Eos
-                    | instrucciones + "continuar" + Eos
+                //| instrucciones + "retorna" + exp + Eos //
+                //   | instrucciones + "salir" + Eos //
+                //  | instrucciones + "continuar" + Eos //
                     | asig_var
+                    | dec_var
+                //     | sen_si //
+                //  | sen_switch //
+                //  | sen_para //
+                //  | sen_mientras //
+                //  | sen_hacer //
+                    | sen_fun_proc
+                //  | "retorna" + exp + Eos //
+                //  | "salir" + Eos //
+                  //  | "continuar" + Eos //
+                  ;
+
+            instrucciones_in.Rule = MakePlusRule(instrucciones_in, instrucciones_in1);
+
+            instrucciones_in1.Rule=asig_var
                     | dec_var
                     | sen_si
                     | sen_switch

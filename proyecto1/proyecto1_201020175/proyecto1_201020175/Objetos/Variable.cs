@@ -22,6 +22,7 @@ namespace Proyecto1
         public int vof;//0 nada, 1 var, 2 func
         public bool arreglo;
         public string dimensiones;
+        public List<Variable> parametros;
         public Variable() {
             id = "";
             tipo = "";

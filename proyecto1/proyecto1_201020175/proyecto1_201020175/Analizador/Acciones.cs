@@ -23,6 +23,49 @@ namespace Proyecto1
             return sumatoria;   
         }
 
+        private object casteo(string tipo, object valor) {
+            object retorno = null;
+            if (tipo.Equals("cadena")) {
+                retorno = valor.ToString();
+            }else if(tipo.Equals("entero")){
+                if (valor is int) {
+                    retorno = valor;
+                }
+                else if (valor is bool) {
+                    if ((bool)valor)
+                    {
+                        retorno = 1;
+                    }
+                    else {
+                        retorno = 0;
+                    }
+                }
+                else if (valor is double) {
+                    retorno = (int)valor;
+                }
+                else if (valor is char) {
+                    retorno = (int)valor;
+                }
+            }else if(tipo.Equals("boolean")){
+                if(valor is bool){
+                    retorno = valor;
+                }
+            }else if(tipo.Equals("doble")){
+                if(valor is int){
+                    retorno = (double)valor;
+                }else if(valor is double){
+                    retorno = valor;
+                }
+            }else if(tipo.Equals("caracter")){
+                if(valor is int){
+                    retorno = Convert.ToChar(valor);
+                }else if(valor is char){
+                    retorno = valor;
+                }
+            }
+            return retorno;
+        }
+
         public Object action(ParseTreeNode node)
         {
             Object result = null;
@@ -58,6 +101,43 @@ namespace Proyecto1
                         if (node.ChildNodes.Count == 1) {
                             object instrucciones = action(node.ChildNodes[0]);
                         }
+                        break;
+                    }
+                case "instrucciones_in":
+                    {
+                        if (node.ChildNodes.Count > 0) {
+                            for (int i = 0; i < node.ChildNodes.Count; i++) {
+                                object a = action(node.ChildNodes[i]);
+                                if (a != null)
+                                {
+                                    if (a is int)
+                                    {
+                                        if ((int)a == 0) {
+                                            result = a;
+                                        }else if ((int)a == 1)
+                                        {
+                                            result = a;
+                                            continue;//sentencia continuar
+                                        }
+                                        else if ((int)a == 2)
+                                        {
+                                            result = a;
+                                            break;//sentencia break
+                                        }
+                                    }
+                                    else
+                                    {
+                                        result = a;//retorna valor
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case "instrucciones_in1":
+                    {
+                        result = action(node.ChildNodes[0]);
                         break;
                     }
                 case "exp":
@@ -324,7 +404,20 @@ namespace Proyecto1
                                     {
                                         result = (string)izq + (string)der;
                                     }
-                                    else {
+                                    else if (der is char) {
+                                        result = izq.ToString() + der.ToString();
+                                    }
+                                    else if (der is bool) {
+                                        string varc = "";
+                                        if ((bool)der) {
+                                            varc = "verdadero";
+                                        } else {
+                                            varc = "falso";
+                                        }
+                                        result = izq.ToString() + varc.ToString();
+                                    }
+                                    else
+                                    {
                                         Console.WriteLine("Error semantico: no se puede sumar valores de este tipo. ref10");
                                     }
                                 }else if(izq is int){
@@ -346,6 +439,42 @@ namespace Proyecto1
                                         result = Convert.ToString(izq) + (string)der;
                                     }else{
                                         Console.WriteLine("Error semantico: no se puede sumar los valores de este tipo. ref11");
+                                    }
+                                }else if(izq is char){
+                                    if (der is bool)
+                                    {
+                                        string varc = "";
+                                        if ((bool)der) {
+                                            varc = "verdadero";
+                                        } else {
+                                            varc = "falso";
+                                        }
+                                        result = izq.ToString() + varc.ToString();
+                                    }
+                                    else {
+                                        result = izq.ToString() + der.ToString();
+                                    }
+                                }else if(izq is bool){
+                                    string varc = "";
+                                    if ((bool)izq)
+                                    {
+                                        varc = "verdadero";
+                                    }
+                                    else {
+                                        varc = "falso";
+                                    }
+                                    if (der is bool)
+                                    {
+                                        string varc1 = "";
+                                        if ((bool)der) {
+                                            varc1 = "verdadero";
+                                        } else {
+                                            varc1 = "falso";
+                                        }
+                                        result = varc.ToString() + varc1.ToString();
+                                    }
+                                    else {
+                                        result = varc.ToString() + der.ToString();
                                     }
                                 }else{
                                     Console.WriteLine("Error semantico: no se puede sumar valores de este tipo. ref10");
@@ -615,6 +744,18 @@ namespace Proyecto1
                                     } else {
                                         Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref25");
                                     }
+                                }else if(izq is bool){
+                                    if (der is bool) {
+                                        result = (bool)izq == (bool)der;
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref251==");
+                                    }
+                                }else if(izq is char){
+                                    if (der is char) {
+                                        result = (char)izq==(char)der;
+                                    } else {
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref252==");
+                                    }
                                 } else {
                                     Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref20");
                                 }
@@ -637,7 +778,20 @@ namespace Proyecto1
                                     } else {
                                         Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref28");
                                     }
-                                } else {
+                                }
+                                else if (izq is bool){
+                                    if (der is bool){
+                                        result = (bool)izq != (bool)der;
+                                    }else{
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref251==");
+                                    }
+                                }else if (izq is char){
+                                    if (der is char){
+                                        result = (char)izq != (char)der;
+                                    }else{
+                                        Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref252==");
+                                    }
+                                }else{
                                     Console.WriteLine("Error semantico: no se puede comparar datos de diferente tipo. ref27");
                                 }
                             }else if(node.ChildNodes[1].Token.Value.ToString().Equals(">")){//expresion de comparacion mayor que: >
@@ -830,7 +984,14 @@ namespace Proyecto1
                         result = node.Token.Value;
                         Variable temp_var = lst_variables.buscar(node.Token.Value.ToString());
                         if(temp_var!=null){
-                            result=temp_var.valor;
+                            if (temp_var.valor != null)
+                            {
+                                result = temp_var.valor;
+                            }
+                            else {
+                                Console.WriteLine("Error semantico: la variable "+node.Token.Value.ToString()+" no ha sido inicializada. refid");
+                            }
+                            //result=temp_var.valor;
                         }else{
                             Console.WriteLine("Error semantico: la variable no ha sido declarada. ref9");
                         }
@@ -957,14 +1118,34 @@ namespace Proyecto1
                         result = lstExp;
                         break;
                     }
-                case "dec_var"://faltan declarar arreglos
+                case "dec_var":
                     {
                         if (node.ChildNodes.Count == 3) {
                             Variables variables_temp = (Variables)action(node.ChildNodes[2]);
                             string tipo = (string)action(node.ChildNodes[1]);
                             for (int i = 0; i < variables_temp.lista.Count; i++)
                             {
-                                variables_temp.lista[i].tipo = tipo;
+                                //////////////////////////////////////////////////////////////
+                                //id,tipo,valor,keep,nivel
+                                //bool varagregada = (bool)lst_variables.agregarVariable(variables_temp.lista[i].id,tipo,variables_temp.lista[i].valor,false,variables_temp.lista[i].nivel);
+                                if(lst_variables.buscar(variables_temp.lista[i].id)==null){
+                                    if ((tipo.Equals("boolean") && variables_temp.lista[i].valor is bool) ||
+                                        (tipo.Equals("entero") && variables_temp.lista[i].valor is int) ||
+                                        (tipo.Equals("doble") && variables_temp.lista[i].valor is double) ||
+                                        (tipo.Equals("caracter") && variables_temp.lista[i].valor is char) ||
+                                        (tipo.Equals("cadena") && variables_temp.lista[i].valor is string))
+                                    {
+                                        bool varagregada = (bool)lst_variables.agregarVariable(variables_temp.lista[i].id, tipo, variables_temp.lista[i].valor, false, variables_temp.lista[i].nivel);
+                                    }else {
+                                        Console.WriteLine("Error semantico: no se puede asignar un tipo diferente a la variable: " + tipo.ToString() + " ref15");
+                                    }
+                                }else{
+                                    Console.WriteLine("Error semantico: la variable ya ha sido declarada antes. " + variables_temp.lista[i].id);
+                                }
+                                //////////////////////////////////////////////////////////////
+                                /*variables_temp.lista[i].tipo = tipo;
+                                variables_temp.lista[i].keep=false;
+                                variables_temp.lista[i].nivel = nivel;
                                 if (lst_variables.buscar(variables_temp.lista[i].id) == null)
                                 {
                                     if ((tipo.Equals("boolean") && variables_temp.lista[i].valor is bool) ||
@@ -983,7 +1164,7 @@ namespace Proyecto1
                                 else
                                 {
                                     Console.WriteLine("Error semantico: la variable ya ha sido declarada antes. " + variables_temp.lista[i].id);
-                                }
+                                }*/
                             }
                         }else if (node.ChildNodes.Count == 4) {
                             if (node.ChildNodes[0].Token.Value.Equals("keep"))
@@ -992,21 +1173,19 @@ namespace Proyecto1
                                 string tipo=(string)action(node.ChildNodes[2]);
                                 for(int i=0; i<variables_temp.lista.Count; i++){
                                     variables_temp.lista[i].tipo=tipo;
-                                    if (lst_variables.buscar(variables_temp.lista[i].id) == null)
-                                    {
+                                    if (lst_variables.buscar(variables_temp.lista[i].id) == null){
                                         if ((tipo.Equals("boolean") && variables_temp.lista[i].valor is bool) ||
                                             (tipo.Equals("entero") && variables_temp.lista[i].valor is int) ||
                                             (tipo.Equals("doble") && variables_temp.lista[i].valor is double) ||
                                             (tipo.Equals("caracter") && variables_temp.lista[i].valor is char) ||
                                             (tipo.Equals("cadena") && variables_temp.lista[i].valor is string))
                                         {
-                                            lst_variables.agregar(variables_temp.lista[i]);
-                                        }
-                                        else {
+                                            //lst_variables.agregar(variables_temp.lista[i]);
+                                            bool varagregada = (bool)lst_variables.agregarVariable(variables_temp.lista[i].id, tipo, variables_temp.lista[i].valor, false, variables_temp.lista[i].nivel);
+                                        }else {
                                             Console.WriteLine("Error semantico: no se puede asignar un tipo diferente a la variable: "+tipo.ToString()+" ref12");
                                         }
-                                    }
-                                    else {
+                                    }else {
                                         Console.WriteLine("Error semantico: la variable ya ha sido declarada antes. "+variables_temp.lista[i].id);
                                     }
                                 }
@@ -1025,7 +1204,8 @@ namespace Proyecto1
                                             (tipo.Equals("caracter") && variables_temp.lista[i].valor is char) ||
                                             (tipo.Equals("cadena") && variables_temp.lista[i].valor is string))
                                         {
-                                            lst_variables.agregar(variables_temp.lista[i]);
+                                            //lst_variables.agregar(variables_temp.lista[i]);
+                                            bool varagregada = (bool)lst_variables.agregarVariable(variables_temp.lista[i].id, tipo, variables_temp.lista[i].valor, false, variables_temp.lista[i].nivel);
                                         }
                                         else
                                         {
@@ -1141,10 +1321,12 @@ namespace Proyecto1
                                             vartemp.arreglo = true;
                                             vartemp.dimensiones = dim1;
                                             vartemp.keep =false;
+                                            vartemp.vof = 1;
+                                            vartemp.tipo = tipovar;
                                             vartemp.id = lstids[i].ToString();
-                                            //lstExp.RemoveAt(lstExp.Count - 1);
                                             vartemp.valor = lstExp;
-                                            lst_variables.agregar(vartemp);
+                                            //lst_variables.agregar(vartemp);
+                                            lst_variables.agregarArreglos(lstids[i].ToString(), tipovar, lstExp, false, nivel, dim1);
                                         }
                                         else
                                         {
@@ -1239,9 +1421,11 @@ namespace Proyecto1
                                             vartemp.dimensiones = dim1;
                                             vartemp.keep = true;
                                             vartemp.id = lstids[i].ToString();
-                                            //lstExp.RemoveAt(lstExp.Count - 1);
+                                            vartemp.vof = 1;
+                                            vartemp.tipo = tipovar;
                                             vartemp.valor = lstExp;
-                                            lst_variables.agregar(vartemp);
+                                            //lst_variables.agregar(vartemp);
+                                            lst_variables.agregarArreglos(lstids[i].ToString(), tipovar, lstExp, true, this.nivel, dim1);
                                         }
                                         else
                                         {
@@ -1284,14 +1468,40 @@ namespace Proyecto1
                     {
                         List<string> listaids = new List<string>();
                         for (int i = 0; i < node.ChildNodes.Count; i++) {
-                            listaids.Add((string)action(node.ChildNodes[i]));
+                            listaids.Add(node.ChildNodes[i].Token.Value.ToString());
+                            //listaids.Add((string)action(node.ChildNodes[i]));
                         }
                         result = listaids;
                         break;
                     }
                 case "asig_var":
                     {
-                        if (node.ChildNodes.Count == 2) { } else if (node.ChildNodes.Count == 3) {
+                        if (node.ChildNodes.Count == 2) {
+                            Variable var_temp = lst_variables.buscar(node.ChildNodes[0].Token.Value.ToString());
+                            if (var_temp != null) {
+                                if(var_temp.vof==1){
+                                    if (var_temp.valor is int) {
+                                        if (node.ChildNodes[1].Token.Value.ToString().Equals("++")){
+                                            var_temp.valor = (int)var_temp.valor + 1;
+                                        }else if (node.ChildNodes[1].Token.Value.ToString().Equals("--")){
+                                            var_temp.valor = (int)var_temp.valor - 1;
+                                        }
+                                    } else if (var_temp.valor is double) {
+                                        if (node.ChildNodes[1].Token.Value.ToString().Equals("++")) {
+                                            var_temp.valor = (double)var_temp.valor + 1;
+                                        } else if (node.ChildNodes[1].Token.Value.ToString().Equals("--")) {
+                                            var_temp.valor = (double)var_temp.valor - 1;
+                                        }
+                                    } else {
+                                        Console.WriteLine("Error semantico: la variable "+var_temp.id+" no es de tipo numerico. ref ++ --");
+                                    }
+                                }else{
+                                    Console.WriteLine("Error semantico: el id: "+var_temp.id+" es una funcion y solo se puede asignar a una variable. ref59");
+                                }
+                            } else {
+                                Console.WriteLine("Error Semantico: la variable"+node.ChildNodes[0].Token.Value.ToString()+" no ha sido declarada. ref ++ --");
+                            }
+                        } else if (node.ChildNodes.Count == 3) {
                             if (node.ChildNodes[1].Token.Value.ToString().Equals("=")) {
                                 Variable var_temp = lst_variables.buscar(node.ChildNodes[0].Token.Value.ToString());
                                 if (var_temp != null) {
@@ -1332,6 +1542,8 @@ namespace Proyecto1
                                                 }else {
                                                     var_temp.valor = "falso";
                                                 }
+                                            }else if(val_temp is char){
+                                                var_temp.valor = val_temp.ToString();
                                             } else {
                                                 Console.WriteLine("Error semantico: error al asigar cadena ref61");
                                             }
@@ -1340,8 +1552,8 @@ namespace Proyecto1
                                             if (val_temp is char) {
                                                 var_temp.valor = val_temp;
                                             }else if(val_temp is int){
-                                                var_temp.valor = (char)val_temp;
-       
+                                                //var_temp.valor = (Char)val_temp;
+                                                var_temp.valor = Convert.ToChar(val_temp);
                                             } else {
                                                 Console.WriteLine("Error semantico: error de tipo en asignacion de caracter. ref60");
                                             }
@@ -1355,10 +1567,41 @@ namespace Proyecto1
                                             Console.WriteLine("Error semantico: ha ocurrido un error con el tipo de la variable. ref57");
                                         }
                                     }else {
-                                        Console.WriteLine("Error semantico: el id es una funcion y solo se puede asignar a una variable. ref59");
+                                        Console.WriteLine("Error semantico: el id " + var_temp.id + " es una funcion y solo se puede asignar a una variable. ref591");
                                     }
                                 } else {
                                     Console.WriteLine("Error semantico: la variable no ha sido declarada. ref55");
+                                }
+                            }else if (node.ChildNodes[1].Token.Value.ToString().Equals("+=")) {
+                                Variable var_temp = lst_variables.buscar(node.ChildNodes[0].Token.Value.ToString());
+                                if (var_temp != null) {
+                                    if (var_temp.vof == 1) {
+                                        object val_temp = action(node.ChildNodes[2]);
+                                        if (val_temp != null)
+                                        {
+                                            object val_casteado = casteo(var_temp.tipo,val_temp);
+                                            if (val_casteado != null)
+                                            {
+                                                if (val_casteado is string) {
+                                                    var_temp.valor = (string)var_temp.valor + (string)val_casteado;
+                                                } else if (val_casteado is int) {
+                                                    var_temp.valor = (int)var_temp.valor + (int)val_casteado;
+                                                } else if (val_casteado is double) {
+                                                    var_temp.valor = (double)var_temp.valor + (double)val_casteado;
+                                                }
+                                            }
+                                            else {
+                                                Console.WriteLine("Error semantico: el casteo no ha sido posible para " +var_temp.id+". ref+=");
+                                            }
+                                        }
+                                        else {
+                                            Console.WriteLine("Error semantico: la variable "+node.ChildNodes[2].Token.Value.ToString()+ " ref asig_var_+=");
+                                        }
+                                    } else {
+                                        Console.WriteLine("Error semantico: el id es una funcion y solo se puede asignar a variables.");
+                                    }
+                                } else {
+                                    Console.WriteLine("Error semantico: La variable no ha sido Declarada. refasig_var");
                                 }
                             }
                         }
@@ -1397,7 +1640,7 @@ namespace Proyecto1
                                             int indice = getIndice(ind, tam);
                                             if (vartemp.vof == 1)
                                             {
-                                                object val_temp = action(node.ChildNodes[2]);
+                                                object val_temp = action(node.ChildNodes[3]);
                                                 if (vartemp.tipo.Equals("entero"))
                                                 {
                                                     if (val_temp is int)
@@ -1466,18 +1709,19 @@ namespace Proyecto1
                                                     }
                                                     else
                                                     {
-                                                        Console.WriteLine("Error semantico: error al asigar cadena ref61");
+                                                        Console.WriteLine("Error semantico: error al asigar cadena ref612");
                                                     }
                                                 }
                                                 else if (vartemp.tipo.Equals("caracter"))
-                                                {//pendiente
+                                                {
                                                     if (val_temp is char)
                                                     {
                                                         listaaretornar[indice] = val_temp;
                                                     }
                                                     else if (val_temp is int)
                                                     {
-                                                        listaaretornar[indice] = (char)val_temp;
+                                                        //listaaretornar[indice] = (char)val_temp;
+                                                        listaaretornar[indice] = Convert.ToChar(val_temp);
                                                     }
                                                     else
                                                     {
@@ -1497,12 +1741,12 @@ namespace Proyecto1
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine("Error semantico: ha ocurrido un error con el tipo de la variable. ref57");
+                                                    Console.WriteLine("Error semantico: ha ocurrido un error con el tipo de la variable. ref571");
                                                 }
                                             }
                                             else
                                             {
-                                                Console.WriteLine("Error semantico: el id es una funcion y solo se puede asignar a una variable. ref59");
+                                                Console.WriteLine("Error semantico: el id " + vartemp.id + " es una funcion y solo se puede asignar a una variable. ref592");
                                             }
                                         }
                                         else
@@ -1598,61 +1842,70 @@ namespace Proyecto1
                         }
                         break;
                     }
-                /*case "e":
+                case "dec_para": //pendiente
                     {
-                        if (node.ChildNodes.Count == 1)
-                        {
-                            result = action(node.ChildNodes[0]);
-                        }
-                        else if (node.ChildNodes.Count == 3)
-                        {
-                            double op1 = Convert.ToDouble(action(node.ChildNodes[0]).ToString());
-                            double op2 = Convert.ToDouble(action(node.ChildNodes[2]).ToString());
-                            if (node.ChildNodes[1].Token.Value.ToString() == "+")
-                            {
-                                result = op1 + op2;
-                            }
-                            else
-                            {
-                                result = op1 - op2;
-                            }
+                        if (node.ChildNodes.Count == 1) { }else if (node.ChildNodes.Count == 5) {
+                            
                         }
                         break;
                     }
-                case "t":
+                case "sen_mientras":
                     {
-                        if (node.ChildNodes.Count == 1)
-                        {
-                            result = action(node.ChildNodes[0]);
-                        }
-                        else if (node.ChildNodes.Count == 3)
-                        {
-                            double op1 = Convert.ToDouble(action(node.ChildNodes[0]).ToString());
-                            double op2 = Convert.ToDouble(action(node.ChildNodes[2]).ToString());
-                            if (node.ChildNodes[1].Token.Value.ToString() == "*")
-                            {
-                                result = op1 * op2;
+                        if (node.ChildNodes.Count == 5) {
+                            nivel++;
+                            object repite = action(node.ChildNodes[2]);
+                            while((bool)repite){
+                                Console.WriteLine("repite mientras");
+                                object a = action(node.ChildNodes[4]);
+                                if (a != null) {
+                                    if (a is int)
+                                    {
+                                        if ((int)a == 1)
+                                        {
+                                            continue;
+                                        }
+                                        else if ((int)a == 2)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    else {
+                                        result = a;
+                                        //break;
+                                    }
+                                }
+                                repite = action(node.ChildNodes[2]);
                             }
-                            else
-                            {
-                                result = op1 / op2;
-                            }
+                            nivel--;
                         }
                         break;
                     }
-                case "f":
+                case "sen_hacer":
                     {
-                        if (node.ChildNodes.Count > 0)
-                        {
-                            result = action(node.ChildNodes[0]);
+                        if (node.ChildNodes.Count == 6) {
+                            nivel++;
+                            object repite = action(node.ChildNodes[4]);
+                            do{
+                                Console.WriteLine("repite mientras");
+                                object a = action(node.ChildNodes[1]);
+                                if (a != null){
+                                    if (a is int){
+                                        if ((int)a == 1){
+                                            continue;
+                                        }else if ((int)a == 2){
+                                            break;
+                                        }
+                                    }else{
+                                        result = a;
+                                        //break;
+                                    }
+                                }
+                                repite = action(node.ChildNodes[4]);
+                            }while((bool)repite);
+                            nivel--;
                         }
                         break;
                     }
-                case "number":
-                    {
-                        result = node.Token.Value;
-                        break;
-                    }*/
             }
             return result;
         }
