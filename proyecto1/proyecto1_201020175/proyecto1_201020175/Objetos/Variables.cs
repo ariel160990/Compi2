@@ -89,6 +89,11 @@ namespace Proyecto1
 
         public bool agregarFuncion(string id,string tipo, object valor, bool keepp, int nivel, List<Variable> parametros) { 
             bool exito=true;
+            if(esreservada(id)){
+                Console.WriteLine("Error Semantico: el id: "+id+" para el metodo no se puede utilizar por que es reservado del lenguaje.");
+                exito = false;
+            }
+
             for (int i = 0; i < lista.Count(); i++) {
                 if (lista[i].id.Equals(id)) {
                     exito=false;
@@ -112,6 +117,19 @@ namespace Proyecto1
                 lista.Add(nueva);
             }
             return exito;
+        }
+
+        public bool esreservada(string iden) {
+            if (iden.Equals("reproducir") ||
+                iden.Equals("esperar") ||
+                //iden.Equals("principal") ||
+                iden.Equals("ordenar") ||
+                iden.Equals("sumarizar") ||
+                iden.Equals("longitud") ||
+                iden.Equals("mensaje")) {
+                    return true;
+            }
+            return false;
         }
     }
 }

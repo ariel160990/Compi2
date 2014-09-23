@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Irony.Parsing;
+using Toub.Sound.Midi;
+using System.Threading;
 
 namespace Proyecto1
 {
@@ -19,6 +21,50 @@ namespace Proyecto1
 
         public Ventana()
         {
+            /*Canales a =  new Canales();
+            NoteOn nueva = new NoteOn(100, 1, "c3", 127);
+            a.agregarNotas(1, nueva);
+            nueva = new NoteOn(100, 1, "c3", 127);
+            a.agregarNotas(1, nueva);
+            nueva = new NoteOn(1000, 1, "d3", 127);
+            a.agregarNotas(1, nueva);
+            nueva = new NoteOn(100, 1, "e3", 127);
+            a.agregarNotas(1, nueva);
+            nueva = new NoteOn(100, 1, "f3", 127);
+            a.agregarNotas(1, nueva);
+            nueva = new NoteOn(100, 1, "g3", 127);
+            a.agregarNotas(1, nueva);*/
+            /*MidiPlayer.OpenMidi();
+            MidiPlayer.Play(new NoteOn(0, 1, "c3", 127));
+            Thread.Sleep(1000);
+            MidiPlayer.Play(new NoteOff(0, 1, "c3", 127));
+            MidiPlayer.Play(new NoteOn(0, 10, "e3", 127));
+            Thread.Sleep(1000);
+            MidiPlayer.Play(new NoteOff(0, 10, "e3", 127));
+            MidiPlayer.Play(new NoteOn(0, 10, "g3", 127));
+            Thread.Sleep(1000);
+            MidiPlayer.Play(new NoteOff(0, 10, "g3", 127));
+            MidiPlayer.Play(new NoteOn(0, 10, "f3", 127));
+            Thread.Sleep(1000);
+            MidiPlayer.Play(new NoteOff(0, 10, "f3", 127));
+            MidiPlayer.Play(new NoteOn(0, 10, "f3", 127));
+            Thread.Sleep(1000);
+            MidiPlayer.Play(new NoteOff(0, 10, "f3", 127));
+            MidiPlayer.Play(new NoteOn(0, 10, "e3", 127));
+            Thread.Sleep(1000);
+            MidiPlayer.Play(new NoteOff(0, 10, "e3", 127));
+            MidiPlayer.Play(new NoteOn(0, 10, "d3", 127));
+            Thread.Sleep(1000);
+            MidiPlayer.Play(new NoteOff(0, 10, "d3", 127));
+            MidiPlayer.Play(new NoteOn(0, 10, "c3", 127));
+            Thread.Sleep(1000);
+            MidiPlayer.Play(new NoteOff(0, 10, "c3", 127));
+            MidiPlayer.Play(new NoteOn(0, 10, "e3", 127));
+            Thread.Sleep(1000);
+            MidiPlayer.Play(new NoteOff(0, 10, "e3", 127));
+            MidiPlayer.Play(new NoteOn(0, 10, "c3", 127));
+            Thread.Sleep(1000);
+            MidiPlayer.Play(new NoteOff(0, 10, "c3", 127));*/
             InitializeComponent();
         }
 

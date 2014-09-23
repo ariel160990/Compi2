@@ -4,15 +4,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Irony.Parsing;
+using Toub.Sound.Midi;
 
 namespace Proyecto1
 {
     class Acciones
     {
         Variables lst_variables = new Variables();
+        Canales lst_canales = new Canales();
         public int nivel = 0;
         public Object do_action(ParseTreeNode pt_node) {
-            return action(pt_node);
+            
+            //return action(pt_node);
+            action(pt_node);
+            ejecutarCodigo();
+            return null;
+        }
+
+        private void ejecutarCodigo(){
+            Variable metodoprincipal = null;
+            for (int i = 0; i < lst_variables.lista.Count; i++) {
+                if (lst_variables.lista[i].id.Equals("principal")) {
+                    metodoprincipal = lst_variables.lista[i];
+                }
+            }
+            if (metodoprincipal != null)
+            {
+                ParseTreeNode node_ejecucion = (ParseTreeNode)metodoprincipal.valor;
+                action(node_ejecucion);
+            }
+            else {
+                Console.WriteLine("Error: el metodo principal no se ha definido.");
+            }
         }
 
         private int getIndice(int[] indices, int[] tam)
@@ -21,6 +44,11 @@ namespace Proyecto1
             for (int x = 1; x < indices.Length; x++)
                 sumatoria = (sumatoria * tam[x]) + indices[x];
             return sumatoria;   
+        }
+
+        private double frecuencia(double nota, double octava)
+        {
+            return (440.0 * Math.Exp(((octava - 4) + (nota - 10) / 12) * Math.Log(2)));
         }
 
         private object casteo(string tipo, object valor) {
@@ -1903,6 +1931,229 @@ namespace Proyecto1
                                 repite = action(node.ChildNodes[4]);
                             }while((bool)repite);
                             nivel--;
+                        }
+                        break;
+                    }
+                case "sen_fun_proc":
+                    {
+                        if (node.ChildNodes.Count == 7) {
+                            string idfun= node.ChildNodes[2].Token.Value.ToString();
+                            string tipofun = (string)action(node.ChildNodes[1]);
+                            object valorfun = node.ChildNodes[6];
+                            bool keepfun = true;
+                            int nivelfun = 0;
+                            List<Variable> paramfun = (List<Variable>)action(node.ChildNodes[4]);
+                            bool resultado = lst_variables.agregarFuncion(idfun,tipofun,valorfun,keepfun,nivelfun,paramfun);
+                            if (resultado){
+                            }else {
+                                Console.WriteLine("Error semantico: no se ha guardado la funcion."+idfun.ToString());
+                            }
+                        }
+                        else if (node.ChildNodes.Count == 6) {
+                            //if (node.ChildNodes[0].Token.Value.ToString().Equals("keep"))
+                            if (node.ChildNodes[0].Token!=null)
+                            {
+                                if (node.ChildNodes[1].Term.Name.ToString().Equals("tipo_var"))
+                                {
+                                    string idfun = node.ChildNodes[2].Token.Value.ToString();
+                                    string tipofun = (string)action(node.ChildNodes[1]);
+                                    object valorfun = node.ChildNodes[5];
+                                    bool keepfun = true;
+                                    int nivelfun = 0;
+                                    List<Variable> paramfun = null;
+                                    bool resultado = lst_variables.agregarFuncion(idfun, tipofun, valorfun, keepfun, nivelfun, paramfun);
+                                    if (resultado)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se ha guardado la funcion." + idfun.ToString());
+                                    }
+                                }
+                                else {
+                                    string idfun = node.ChildNodes[1].Token.Value.ToString();
+                                    string tipofun = "void";
+                                    object valorfun = node.ChildNodes[5];
+                                    bool keepfun = true;
+                                    int nivelfun = 0;
+                                    List<Variable> paramfun = (List<Variable>)action(node.ChildNodes[3]);
+                                    bool resultado = lst_variables.agregarFuncion(idfun, tipofun, valorfun, keepfun, nivelfun, paramfun);
+                                    if (resultado)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se ha guardado la funcion." + idfun.ToString());
+                                    }
+                                }
+                            }
+                            else {
+                                string idfun = node.ChildNodes[1].Token.Value.ToString();
+                                string tipofun = (string)action(node.ChildNodes[0]);
+                                object valorfun = node.ChildNodes[5];
+                                bool keepfun = false;
+                                int nivelfun = 0;
+                                List<Variable> paramfun = (List<Variable>)action(node.ChildNodes[3]);
+                                bool resultado = lst_variables.agregarFuncion(idfun, tipofun, valorfun, keepfun, nivelfun, paramfun);
+                                if (resultado)
+                                {
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error semantico: no se ha guardado la funcion." + idfun.ToString());
+                                }
+                            }
+                        }
+                        else if (node.ChildNodes.Count == 5) {
+                            if (node.ChildNodes[0].Token != null)
+                            {
+                                if (node.ChildNodes[0].Token.Value.ToString().Equals("keep"))//con keep
+                                {
+                                    string idfun = node.ChildNodes[1].Token.Value.ToString();
+                                    string tipofun = "void";
+                                    object valorfun = node.ChildNodes[4];
+                                    bool keepfun = true;
+                                    int nivelfun = 0;
+                                    List<Variable> paramfun = null;
+                                    bool resultado = lst_variables.agregarFuncion(idfun, tipofun, valorfun, keepfun, nivelfun, paramfun);
+                                    if (resultado)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Error semantico: no se ha guardado la funcion." + idfun.ToString());
+                                    }
+                                }
+                                else { //sin keep
+                                    string idfun = node.ChildNodes[0].Token.Value.ToString();
+                                    string tipofun = "void";
+                                    object valorfun = node.ChildNodes[4];
+                                    bool keepfun = false;
+                                    int nivelfun = 0;
+                                    List<Variable> paramfun = (List<Variable>)action(node.ChildNodes[2]);
+                                    bool resultado = lst_variables.agregarFuncion(idfun, tipofun, valorfun, keepfun, nivelfun, paramfun);
+                                    if (resultado){
+                                    }else{
+                                        Console.WriteLine("Error semantico: no se ha guardado la funcion." + idfun.ToString());
+                                    }
+                                }
+                            }
+                            else { //sin keep
+                                string idfun = node.ChildNodes[1].Token.Value.ToString();
+                                string tipofun = (string)action(node.ChildNodes[0]);
+                                object valorfun = node.ChildNodes[4];
+                                bool keepfun = false;
+                                int nivelfun = 0;
+                                List<Variable> paramfun = null;
+                                bool resultado = lst_variables.agregarFuncion(idfun, tipofun, valorfun, keepfun, nivelfun, paramfun);
+                                if (resultado)
+                                {
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error semantico: no se ha guardado la funcion." + idfun.ToString());
+                                }
+                            }
+                        }
+                        else if (node.ChildNodes.Count == 4) {
+                            string idfun = node.ChildNodes[0].Token.Value.ToString();
+                            string tipofun = "void";
+                            object valorfun = node.ChildNodes[3];
+                            bool keepfun = false;
+                            int nivelfun = 0;
+                            List<Variable> paramfun = null;
+                            bool resultado = lst_variables.agregarFuncion(idfun, tipofun, valorfun, keepfun, nivelfun, paramfun);
+                            if (resultado)
+                            {
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error semantico: no se ha guardado la funcion." + idfun.ToString());
+                            }
+                        }
+                        break;
+                    }
+                case "lista_dec_param":
+                    {
+                        if (node.ChildNodes.Count == 2) {
+                            List<Variable> param = new List<Variable>();
+                            Variable a = new Variable();
+                            a.id = node.ChildNodes[1].Token.Value.ToString();
+                            a.tipo = (string)action(node.ChildNodes[0]);
+                            param.Add(a);
+                            result = param;
+                        }
+                        else if (node.ChildNodes.Count == 4) {
+                            List<Variable> param = (List<Variable>)action(node.ChildNodes[0]);
+                            Variable a = new Variable();
+                            a.id = node.ChildNodes[3].Token.Value.ToString();
+                            a.tipo = (string)action(node.ChildNodes[2]);
+                            param.Add(a);
+                            result = param;
+                        }
+                        break;
+                    }
+                case "llamada_a_funcion_instruccion":
+                    {
+                        string id = (string)action(node.ChildNodes[0]);
+                        if (node.ChildNodes.Count == 3) { } else if (node.ChildNodes.Count == 4) {
+
+                        }
+                        break;
+                    }
+                case "sen_fun_reproducir":
+                    {
+                        string nota = (string)action(node.ChildNodes[2]);
+                        int octava=0;
+                        int milisegundos=0;
+                        int canal=0;
+                        bool nota_Valida = true;
+                        if (action(node.ChildNodes[4]) is int){
+                            octava = (int)action(node.ChildNodes[4]);
+                        }else {
+                            Console.WriteLine("Error semantico: el parametro de octava para la funcion reproducir debe ser entero.");
+                            nota_Valida = false;
+                        }
+                        if (action(node.ChildNodes[6]) is int)
+                        {
+                            milisegundos = (int)action(node.ChildNodes[6]);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error semantico: el parametro de milisegundos para la funcion reproducir debe ser entero.");
+                            nota_Valida = false;
+                        }
+                        if (action(node.ChildNodes[8]) is int)
+                        {
+                            canal = (int)action(node.ChildNodes[8]);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error semantico: el parametro de canal para la funcion reproducir debe ser entero.");
+                            nota_Valida = false;
+                        }
+                        if (nota_Valida) {
+                            NoteOn nueva = new NoteOn(milisegundos, (byte)canal,nota + octava.ToString(), 127);
+                            lst_canales.agregarNotas(canal, nueva);
+                        }
+                        break;
+                    }
+                case "nota":
+                    {
+                        switch (node.ChildNodes[0].Token.Value.ToString())
+                        {
+                            case "do":{result = "c";break;}
+                            case "do#": { result = "c#"; break; }
+                            case "re": { result = "d"; break; }
+                            case "re#": { result = "d#"; break; }
+                            case "mi": { result = "e"; break; }
+                            case "fa": { result = "f"; break; }
+                            case "fa#": { result = "f#"; break; }
+                            case "sol": { result = "g"; break; }
+                            case "sol#": { result = "g#"; break; }
+                            case "la": { result = "a"; break; }
+                            case "la#": { result = "a#"; break; }
+                            case "si": { result = "b"; break; }
                         }
                         break;
                     }

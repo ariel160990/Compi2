@@ -77,6 +77,7 @@ namespace Proyecto1
                         sen_fun_principal = new NonTerminal("sen_fun_principal"),
                         sen_fun_mensaje = new NonTerminal("sen_fun_mensaje"),
                         llamada_a_funcion = new NonTerminal("llamada_a_funcion"),
+                        llamada_a_funcion_instruccion = new NonTerminal("llamada_a_funcion_instruccion"),
                         lista_param = new NonTerminal("lista_param"),
                         arreglo = new NonTerminal("arreglo"),
                         arreglo1 = new NonTerminal("arreglo1"),
@@ -86,7 +87,7 @@ namespace Proyecto1
                         dim_arreglo = new NonTerminal("dim_arreglo"),
                         instrucciones = new NonTerminal("instrucciones"),
                         instrucciones_in = new NonTerminal("instrucciones_in"),
-                        instrucciones_in1 = new NonTerminal("instruccioens_in1");
+                        instrucciones_in1 = new NonTerminal("instrucciones_in1");
             s0.Rule = def_pista;
             def_pista.Rule = ToTerm("pista")+id+ extiende + Eos +Indent + instrucciones + Dedent
                     | ToTerm("pista") + id + Eos + Indent + instrucciones + Dedent;
@@ -172,27 +173,37 @@ namespace Proyecto1
             //sentencia hacer
             sen_hacer.Rule = ToTerm("hacer") + Eos + Indent + instrucciones_in + Dedent + "mientras" + "(" + exp + ")" + Eos;
             //funciones y procedimientos
-            sen_fun_proc.Rule = ToTerm("keep") + tipo_var + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent
-                    | ToTerm("keep") + tipo_var + id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent
-                    | ToTerm("keep") + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent
-                    | ToTerm("keep") + id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent
-                    | tipo_var + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent
-                    | tipo_var + id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent
-                    | id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent
-                    | id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent
-                    | id + "(" + ")" + Eos
-                    | id + "(" + lista_param + ")" + Eos;
+            sen_fun_proc.Rule = ToTerm("keep") + tipo_var + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent//7--
+                    | ToTerm("keep") + tipo_var + id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent//6 --
+                    | ToTerm("keep") + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent//6 --
+                    | ToTerm("keep") + id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent//5--
+                    | tipo_var + id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent//6--
+                    | tipo_var + id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent//5--
+                    | id + "(" + lista_dec_param + ")" + Eos + Indent + instrucciones_in + Dedent//5--
+                    | id + "(" + ")" + Eos + Indent + instrucciones_in + Dedent;//4--
+                    //| id + "(" + ")" + Eos
+                    //| id + "(" + lista_param + ")" + Eos;
             lista_dec_param.Rule = lista_dec_param + "," +tipo_var + id
                     | tipo_var + id;
-            //llamada a funcion
+            //llamada a funcion en expresion
             llamada_a_funcion.Rule = id + "(" + ")"
                     | id + "(" + lista_param +")";
             lista_param.Rule = lista_param + "," + exp
                     | exp;
-            /*
+            //lamada a funcion en instruccion_in
+            llamada_a_funcion_instruccion.Rule =  id + "(" + ")" + Eos
+                    | id + "(" + lista_param + ")" + Eos;
+            
             //funcion reproducir
             sen_fun_reproducir.Rule = ToTerm("reproducir") + "(" + nota + "," + exp + "," + exp + "," + exp + ")";
-            nota.Rule = ToTerm("do") | ToTerm("re") | ToTerm("mi") | ToTerm("fa") | ToTerm("sol") | ToTerm("la") | ToTerm("si");
+            nota.Rule = ToTerm("do")  | ToTerm("do#")
+                    | ToTerm("re")  | ToTerm("re#")
+                    | ToTerm("mi")
+                    | ToTerm("fa")  | ToTerm("fa#") 
+                    | ToTerm("sol")     | ToTerm("sol#")
+                    | ToTerm("la")  | ToTerm("la#")
+                    | ToTerm("si");
+            /*
             // funcion espera
             sen_fun_espera.Rule = ToTerm("esperar") + "(" + exp + "," + exp + ")" + Eos;   
             // funcion principal
@@ -234,7 +245,8 @@ namespace Proyecto1
                     | sen_para
                     | sen_mientras
                     | sen_hacer
-                    | sen_fun_proc
+                    | llamada_a_funcion_instruccion
+                    | sen_fun_reproducir
                     | "retorna" + exp + Eos
                     | "salir" + Eos
                     | "continuar" + Eos;
