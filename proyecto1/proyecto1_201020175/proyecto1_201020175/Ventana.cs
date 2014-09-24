@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Irony.Parsing;
 using Toub.Sound.Midi;
 using System.Threading;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Proyecto1
 {
@@ -78,7 +79,7 @@ namespace Proyecto1
                     MessageBox.Show(str.ToString());
                 }
                 else {
-                    MessageBox.Show("Error");
+                    MessageBox.Show("Reproduciendo");
                 }
             }
             graficarArbol();
@@ -231,8 +232,96 @@ namespace Proyecto1
             return sumatoria;
         }
 
+        private void cmdGuardarPista_Click(object sender, EventArgs e)
+        {
+            guardarPista(txtNombrePista.Text);
+        }
+
+        private void cmdCargarPista_Click(object sender, EventArgs e)
+        {
+            cargarPista(txtNombrePista.Text);
+        }
+
+        private void guardarPista(string nombre) {
+            try {
+                FileStream fs = new FileStream(@"..\..\pistas_guardadas\" + nombre + ".dat", FileMode.Create);
+                BinaryFormatter formateo = new BinaryFormatter();
+                formateo.Serialize(fs, txtEntrada.Text);
+                fs.Close();
+                MessageBox.Show("La pista "+nombre.ToString()+" ha sido guardada...!");
+            }catch(Exception e){
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        private void cargarPista(string nombre) {
+            try {
+                FileStream fs = new FileStream(@"..\..\pistas_guardadas\" + nombre + ".dat", FileMode.Open);
+                BinaryFormatter formateo = new BinaryFormatter();
+                String cad = formateo.Deserialize(fs) as string;
+                fs.Close();
+                txtEntrada.Text = cad;
+            }catch(Exception e){
+                MessageBox.Show(e.ToString());
+            }    
+        }
+
+        private void guardarLista(string nombre) { 
+            try {
+                FileStream fs = new FileStream(@"..\..\listas_guardadas\" + nombre + ".dat", FileMode.Create);
+                BinaryFormatter formateo = new BinaryFormatter();
+                formateo.Serialize(fs, txtEntrada.Text);
+                fs.Close();
+                MessageBox.Show("La lista "+nombre.ToString()+" ha sido guardada...!");
+            }catch(Exception e){
+                MessageBox.Show(e.ToString());
+            }
+        }
+
+        private void cargarLista(string nombre) {
+            try{
+                FileStream fs = new FileStream(@"..\..\listas_guardadas\" + nombre + ".dat", FileMode.Open);
+                BinaryFormatter formateo = new BinaryFormatter();
+                String cad = formateo.Deserialize(fs) as string;
+                fs.Close();
+                txtEntradaListas.Text = cad;
+            }catch (Exception e){
+                MessageBox.Show(e.ToString());
+            }  
+        }
+
+        private void cmdAnalizarLista_Click(object sender, EventArgs e)
+        {
+            if (txtEntradaListas.Text != null)
+            {
+                AnalizadorListas a = new AnalizadorListas();
+                a.inciar_mensaje(txtMensaje);
+                bool str = a.parse(txtEntradaListas.Text);
+                if (str)
+                {
+                    MessageBox.Show("Lista Analizada");
+                }
+                else
+                {
+                    MessageBox.Show("La cadena de lista contiene errores...");
+                }
+            }
+            else {
+                txtMensaje.Text="Cadena de entrada vacia...!!";
+            }
+        }
+
+        private void cmdGuardarLista_Click(object sender, EventArgs e)
+        {
+            guardarLista(txtNombreLista.Text.ToString());
+        }
+
+        private void cmdCargarLista_Click(object sender, EventArgs e)
+        {
+            cargarLista(txtNombreLista.Text.ToString());
+        }
+
     }
 }
 
 
-//((INDICE1 - INDICE_INFERIOR_1) * N2 + INDICE2 - INDICE_INFERIOR_2 ) * N3 + INDICE3 - INDICE_INFERIOR_3

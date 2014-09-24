@@ -127,6 +127,16 @@ namespace Proyecto1
                     | caracter                
                     | valor_bool
                     | id + lista_dim;
+            //funcion reproducir
+            sen_fun_reproducir.Rule = ToTerm("reproducir") + "(" + nota + "," + exp + "," + exp + "," + exp + ")" + Eos;
+            nota.Rule = ToTerm("do") | ToTerm("do#")
+                    | ToTerm("re") | ToTerm("re#")
+                    | ToTerm("mi")
+                    | ToTerm("fa") | ToTerm("fa#")
+                    | ToTerm("sol") | ToTerm("sol#")
+                    | ToTerm("la") | ToTerm("la#")
+                    | ToTerm("si");
+
             arreglo.Rule = ToTerm("{") + arreglo1 + "}";
             arreglo1.Rule = MakePlusRule(arreglo1, ToTerm(","),arreglo)
                     | arreglo2;
@@ -194,15 +204,7 @@ namespace Proyecto1
             llamada_a_funcion_instruccion.Rule =  id + "(" + ")" + Eos
                     | id + "(" + lista_param + ")" + Eos;
             
-            //funcion reproducir
-            sen_fun_reproducir.Rule = ToTerm("reproducir") + "(" + nota + "," + exp + "," + exp + "," + exp + ")";
-            nota.Rule = ToTerm("do")  | ToTerm("do#")
-                    | ToTerm("re")  | ToTerm("re#")
-                    | ToTerm("mi")
-                    | ToTerm("fa")  | ToTerm("fa#") 
-                    | ToTerm("sol")     | ToTerm("sol#")
-                    | ToTerm("la")  | ToTerm("la#")
-                    | ToTerm("si");
+            
             /*
             // funcion espera
             sen_fun_espera.Rule = ToTerm("esperar") + "(" + exp + "," + exp + ")" + Eos;   

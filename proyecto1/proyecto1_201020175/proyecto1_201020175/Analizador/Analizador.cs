@@ -39,7 +39,6 @@ namespace Proyecto1
                     Console.WriteLine("sintax error: " +a.Message + "   location: "+a.Location + "   state: "+a.ParserState);
                 }
             }
-
             return arbol.Root != null;
         }
 

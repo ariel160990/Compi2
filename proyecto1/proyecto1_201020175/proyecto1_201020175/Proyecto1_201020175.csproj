@@ -54,6 +54,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalizadorListas\AccionesListas.cs" />
+    <Compile Include="AnalizadorListas\AnalizadorListas.cs" />
+    <Compile Include="AnalizadorListas\SintacticListas.cs" />
     <Compile Include="Analizador\Acciones.cs" />
     <Compile Include="Analizador\Analizador.cs" />
     <Compile Include="Analizador\Sintactic.cs" />
@@ -94,6 +97,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="listas_guardadas\" />
+    <Folder Include="pistas_guardadas\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
