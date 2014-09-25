@@ -254,6 +254,22 @@ namespace Proyecto1
             }
         }
 
+        private void guardarLista(string nombre)
+        {
+            try
+            {
+                FileStream fs = new FileStream(@"..\..\listas_guardadas\" + nombre + ".dat", FileMode.Create);
+                BinaryFormatter formateo = new BinaryFormatter();
+                formateo.Serialize(fs, txtEntradaListas.Text);
+                fs.Close();
+                MessageBox.Show("La lista " + nombre.ToString() + " ha sido guardada...!");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+
         private void cargarPista(string nombre) {
             try {
                 FileStream fs = new FileStream(@"..\..\pistas_guardadas\" + nombre + ".dat", FileMode.Open);
@@ -264,18 +280,6 @@ namespace Proyecto1
             }catch(Exception e){
                 MessageBox.Show(e.ToString());
             }    
-        }
-
-        private void guardarLista(string nombre) { 
-            try {
-                FileStream fs = new FileStream(@"..\..\listas_guardadas\" + nombre + ".dat", FileMode.Create);
-                BinaryFormatter formateo = new BinaryFormatter();
-                formateo.Serialize(fs, txtEntrada.Text);
-                fs.Close();
-                MessageBox.Show("La lista "+nombre.ToString()+" ha sido guardada...!");
-            }catch(Exception e){
-                MessageBox.Show(e.ToString());
-            }
         }
 
         private void cargarLista(string nombre) {
@@ -313,12 +317,22 @@ namespace Proyecto1
 
         private void cmdGuardarLista_Click(object sender, EventArgs e)
         {
-            guardarLista(txtNombreLista.Text.ToString());
+            guardarLista(txtNombreLista.Text);
         }
 
         private void cmdCargarLista_Click(object sender, EventArgs e)
         {
-            cargarLista(txtNombreLista.Text.ToString());
+            cargarLista(txtNombreLista.Text);
+        }
+
+        private void txtEntrada_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtEntradaListas_Load(object sender, EventArgs e)
+        {
+
         }
 
     }

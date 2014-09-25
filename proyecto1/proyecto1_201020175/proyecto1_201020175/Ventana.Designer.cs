@@ -36,11 +36,11 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.txtEntradaListas = new FastColoredTextBoxNS.FastColoredTextBox();
-            this.cmdAnalizarLista = new System.Windows.Forms.Button();
-            this.txtNombreLista = new System.Windows.Forms.TextBox();
-            this.cmdGuardarLista = new System.Windows.Forms.Button();
             this.cmdCargarLista = new System.Windows.Forms.Button();
+            this.cmdGuardarLista = new System.Windows.Forms.Button();
+            this.txtNombreLista = new System.Windows.Forms.TextBox();
+            this.cmdAnalizarLista = new System.Windows.Forms.Button();
+            this.txtEntradaListas = new FastColoredTextBoxNS.FastColoredTextBox();
             this.txtMensaje = new System.Windows.Forms.RichTextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -65,6 +65,7 @@
             this.txtEntrada.Name = "txtEntrada";
             this.txtEntrada.Size = new System.Drawing.Size(413, 285);
             this.txtEntrada.TabIndex = 2;
+            this.txtEntrada.Load += new System.EventHandler(this.txtEntrada_Load);
             // 
             // cmdGuardarPista
             // 
@@ -114,7 +115,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(864, 326);
+            this.tabPage1.Size = new System.Drawing.Size(869, 326);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             // 
@@ -133,31 +134,15 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             // 
-            // txtEntradaListas
+            // cmdCargarLista
             // 
-            this.txtEntradaListas.AutoScrollMinSize = new System.Drawing.Size(25, 15);
-            this.txtEntradaListas.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtEntradaListas.Location = new System.Drawing.Point(6, 6);
-            this.txtEntradaListas.Name = "txtEntradaListas";
-            this.txtEntradaListas.Size = new System.Drawing.Size(416, 260);
-            this.txtEntradaListas.TabIndex = 0;
-            // 
-            // cmdAnalizarLista
-            // 
-            this.cmdAnalizarLista.Location = new System.Drawing.Point(304, 285);
-            this.cmdAnalizarLista.Name = "cmdAnalizarLista";
-            this.cmdAnalizarLista.Size = new System.Drawing.Size(99, 23);
-            this.cmdAnalizarLista.TabIndex = 1;
-            this.cmdAnalizarLista.Text = "Analizar Lista";
-            this.cmdAnalizarLista.UseVisualStyleBackColor = true;
-            this.cmdAnalizarLista.Click += new System.EventHandler(this.cmdAnalizarLista_Click);
-            // 
-            // txtNombreLista
-            // 
-            this.txtNombreLista.Location = new System.Drawing.Point(438, 82);
-            this.txtNombreLista.Name = "txtNombreLista";
-            this.txtNombreLista.Size = new System.Drawing.Size(141, 20);
-            this.txtNombreLista.TabIndex = 2;
+            this.cmdCargarLista.Location = new System.Drawing.Point(438, 53);
+            this.cmdCargarLista.Name = "cmdCargarLista";
+            this.cmdCargarLista.Size = new System.Drawing.Size(111, 23);
+            this.cmdCargarLista.TabIndex = 4;
+            this.cmdCargarLista.Text = "Cargar Lista";
+            this.cmdCargarLista.UseVisualStyleBackColor = true;
+            this.cmdCargarLista.Click += new System.EventHandler(this.cmdCargarLista_Click);
             // 
             // cmdGuardarLista
             // 
@@ -169,15 +154,32 @@
             this.cmdGuardarLista.UseVisualStyleBackColor = true;
             this.cmdGuardarLista.Click += new System.EventHandler(this.cmdGuardarLista_Click);
             // 
-            // cmdCargarLista
+            // txtNombreLista
             // 
-            this.cmdCargarLista.Location = new System.Drawing.Point(438, 53);
-            this.cmdCargarLista.Name = "cmdCargarLista";
-            this.cmdCargarLista.Size = new System.Drawing.Size(111, 23);
-            this.cmdCargarLista.TabIndex = 4;
-            this.cmdCargarLista.Text = "Cargar Lista";
-            this.cmdCargarLista.UseVisualStyleBackColor = true;
-            this.cmdCargarLista.Click += new System.EventHandler(this.cmdCargarLista_Click);
+            this.txtNombreLista.Location = new System.Drawing.Point(438, 82);
+            this.txtNombreLista.Name = "txtNombreLista";
+            this.txtNombreLista.Size = new System.Drawing.Size(141, 20);
+            this.txtNombreLista.TabIndex = 2;
+            // 
+            // cmdAnalizarLista
+            // 
+            this.cmdAnalizarLista.Location = new System.Drawing.Point(304, 285);
+            this.cmdAnalizarLista.Name = "cmdAnalizarLista";
+            this.cmdAnalizarLista.Size = new System.Drawing.Size(99, 23);
+            this.cmdAnalizarLista.TabIndex = 1;
+            this.cmdAnalizarLista.Text = "Analizar Lista";
+            this.cmdAnalizarLista.UseVisualStyleBackColor = true;
+            this.cmdAnalizarLista.Click += new System.EventHandler(this.cmdAnalizarLista_Click);
+            // 
+            // txtEntradaListas
+            // 
+            this.txtEntradaListas.AutoScrollMinSize = new System.Drawing.Size(25, 15);
+            this.txtEntradaListas.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtEntradaListas.Location = new System.Drawing.Point(6, 6);
+            this.txtEntradaListas.Name = "txtEntradaListas";
+            this.txtEntradaListas.Size = new System.Drawing.Size(416, 260);
+            this.txtEntradaListas.TabIndex = 0;
+            this.txtEntradaListas.Load += new System.EventHandler(this.txtEntradaListas_Load);
             // 
             // txtMensaje
             // 
